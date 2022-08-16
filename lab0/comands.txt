@@ -1,0 +1,14 @@
+cat /proc/cpuinfo | grep model | head -n 2 
+	"filtra de cpuinfo la palabral model y solo devuelve las primeras dos oraciones"
+
+echo hola > holamundo.txt
+	"agraga hola al archivo holamundo.txt"
+
+wc (archivo)
+	"cuenta cuantos caracteres tiene el archivo"
+
+grep (palabra) < (archivo)
+	"filtra del archivo la palabra"
+
+sed -i 's/old-text/new-text/g' input.txt.
+	"remplazar una palabra"

@@ -1,0 +1,9 @@
+1) Obtener el procesador de la maquina 
+
+	cat /proc/cpuinfo | grep model | head -n 2
+
+2) Cantidad de unidades de ejecución 
+
+	cat /proc/cpuinfo | grep "model name" | wc -l
+
+3) 	
