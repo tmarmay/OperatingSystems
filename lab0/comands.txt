@@ -12,3 +12,9 @@ grep (palabra) < (archivo)
 
 sed -i 's/old-text/new-text/g' input.txt.
 	"remplazar una palabra"
+
+sort -k 4 -n test.in -o weather_cordoba_sorted.in 
+	"Ordena numericamente -n los numeros de la fila 4 (k) del archivo test y lo guarda en wea..."
+
+cat weather_cordoba_sorted.in | tail -n 1 | cut -b -10
+	"saca 10 bytes de la ultima linea que tiene wea.."	
