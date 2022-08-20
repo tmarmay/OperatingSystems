@@ -22,4 +22,5 @@ ip addr | grep link/ether | awk '{print $2}'
 
 #8) Crear una carpeta y agregar dies archivos, luego renombrar sin el e
 mkdir friends && touch friends/fma_S01E{1..10}_es.srt
-for name in *; do newname=`echo $name | cut -c -10` && mv $name $newname.srt ; done
+for name in *; do newname=`echo $name | sed 's/_es//'` && mv $name $newname ; done
+
