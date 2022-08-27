@@ -1,4 +1,5 @@
 #include "command.h"
+#include <glib.h>
 
 
 struct scommand_s {
@@ -88,15 +89,36 @@ char * scommand_get_redir_out(const scommand self){
 //FALTAE COMPLETAR PERO ESTA ES LA IDEA:
     //FALTARIA COMO CALCULAR EL TAMAÑO Y EL RESTO SALE 
 //char *strncat(char *dest, const char *src, size_t n);
-/*
+       //size_t strlen(const char *s);
+            //Return the length of the string s.
+
 char * scommand_to_string(const scommand self){
     assert(self != NULL);
-    unsigned int length = scommand_length(self);
-    *char str = calloc(sizeof(char) * length); 
+    //calcular cuanta memeoria voy a pedir
+    unsigned int length_list = (unsigned int)g_queue_get_length(self->list);
+    unsigned int size_str = 0u;
+    for (unsigned int i = 0u; i < length_list; i++){
+        size_str = size_str + strlen(g_queue_peek_nth(self->list,(guint)i));
+    }
 
+    size_str = (self->c_in != NULL) ? size_str + strlen(self->c_in) : size_str;
+    size_str = (self->c_out != NULL) ? size_str + strlen(self->c_out) : size_str;
+    
+    char *str = calloc(size_str,sizeof(char));
+
+    char *dest;
+    for (unsigned int i = 0u; i < length_list; i++){
+        dest = g_queue_peek_nth(self->list,(guint)i);
+        str = strncat(str,g_queue_peek_nth((gpointer)dest,(guint)i),strlen(dest));
+    }
+    
+    str = (self->c_in != NULL) ? strncat(str,self->c_in,strlen(self->c_in)) : str;
+    str = (self->c_out != NULL) ? strncat(str,self->c_out,strlen(self->c_out)) : str;
+    
+    
     return str;
 }
-*/
+
 
 
 

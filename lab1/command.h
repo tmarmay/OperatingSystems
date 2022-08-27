@@ -9,7 +9,7 @@
 
 #include <stdbool.h> /* para tener bool */
 
-#include <glib.h>
+
 #include <check.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -153,6 +153,7 @@ char * scommand_to_string(const scommand self);
  *  front -> | scmd1 | scmd2 | ... | scmdn | <-back
  *           ------------------------------
  */
+
 
 typedef struct pipeline_s * pipeline;
 
