@@ -10,6 +10,12 @@
 #include <stdbool.h> /* para tener bool */
 
 
+#include <check.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <assert.h>
+
+
 /* scommand: comando simple.
  * Ejemplo: ls -l ej1.c > out < in
  * Se presenta como una secuencia de cadenas donde la primera se denomina
@@ -87,6 +93,7 @@ bool scommand_is_empty(const scommand self);
  * Requires: self!=NULL
  */
 
+
 unsigned int scommand_length(const scommand self);
 /*
  * Da la longitud de la secuencia cadenas que contiene el comando simple.
@@ -149,6 +156,7 @@ char * scommand_to_string(const scommand self);
  *  front -> | scmd1 | scmd2 | ... | scmdn | <-back
  *           ------------------------------
  */
+
 
 typedef struct pipeline_s * pipeline;
 

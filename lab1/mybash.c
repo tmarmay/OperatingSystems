@@ -15,8 +15,10 @@ static void show_prompt(void) {
 
 int main(int argc, char *argv[]) {
     pipeline pipe;
+    pipe = pipe; //profe
     Parser input;
     bool quit = false;
+
 
     input = parser_new(stdin);
     while (!quit) {
@@ -25,10 +27,8 @@ int main(int argc, char *argv[]) {
 
         /* Hay que salir luego de ejecutar? */
         quit = parser_at_eof(input);
-        /*
-         * COMPLETAR
-         *
-         */
+
+        printf("%s",pipeline_to_string(pipe));
     }
     parser_destroy(input); input = NULL;
     return EXIT_SUCCESS;
