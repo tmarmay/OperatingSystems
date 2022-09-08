@@ -47,10 +47,29 @@ bool builtin_alone(pipeline p) {
 }
 
 
+static void read_help_file(){
+
+    FILE *help_file = fopen(".hidden/mybash_help.txt", "r");
+
+    if (help_file == NULL){
+        printf("Error opening the file"); //ver si conviene sacar por stderr
+        exit(EXIT_SUCCESS); // preguntar si no seria el exitfa
+    }
+
+    int response = fgetc(help_file);
+
+    while(response != EOF){
+        printf("%c", response);
+        response = fgetc(help_file);
+    }
+
+    fclose(help_file);
+}
+
+
 /* Ejecuta un comando interno
  * REQUIRES: {builtin_is_internal(cmd)}
  */
-//ojo que pop front y manejo de errores 
 void builtin_run(scommand cmd) {
     assert(builtin_is_internal(cmd));
 
@@ -64,7 +83,7 @@ void builtin_run(scommand cmd) {
     }
      // Falta implementar "help" y "exit"
     if(strcmp(front,INTERNO[1]) == 0) {
-        printf("help");
+        read_help_file();
     }
     if(strcmp(front,INTERNO[2]) == 0) {
         printf("exit");

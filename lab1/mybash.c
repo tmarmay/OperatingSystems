@@ -15,11 +15,7 @@ static void show_prompt(void) {
 
 int main(int argc, char *argv[]) {
     pipeline pipe;
-<<<<<<< HEAD
     pipe = pipe; //profe
-=======
-    pipe = pipe;
->>>>>>> a6d04bbd7f548019e2a153b632fbf73183a34118
     Parser input;
     bool quit = false;
 

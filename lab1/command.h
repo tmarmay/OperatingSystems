@@ -86,13 +86,15 @@ void scommand_set_redir_out(scommand self, char * filename);
 /* Proyectores */
 
 bool scommand_is_empty(const scommand self);
-
+/*
+ * Indica si la secuencia de cadenas tiene longitud 0.
+ *   self: comando simple a decidir si está vacío.
+ *   Returns: ¿Está vacío de cadenas el comando simple?
+ * Requires: self!=NULL
+ */
 
 
 unsigned int scommand_length(const scommand self);
-
-
-
 /*
  * Da la longitud de la secuencia cadenas que contiene el comando simple.
  *   self: comando simple a medir.

@@ -22,7 +22,7 @@ static void execute_scommand(scommand cmd) {
         length = scommand_length(cmd);
         argument_list = malloc(length * sizeof(char *));
 
-        //Parseo los argumentos del cmd en la forma que execvp() los necesita 
+        //Parseo los argumentos del cmd en la forma que execvp() los necesita
         for (unsigned int i = 0u; i < length; i++) {
             aux = scommand_front(cmd);
             argument_list[i] = malloc(strlen(aux));
@@ -47,9 +47,10 @@ static void execute_scommand(scommand cmd) {
         }
         free(argument_list);
     }
-    //conviene usar esto para terminar el proceso mas rapido ? kill 
+
 }
 
+//al principio no iria un if viendo si es interno y llamando al builtin
 void execute_pipeline(pipeline apipe) {
     assert(apipe != NULL);
     unsigned int length = pipeline_length(apipe);
@@ -62,47 +63,29 @@ void execute_pipeline(pipeline apipe) {
         pipeline_pop_front(apipe);
         rc_wait = pipeline_get_wait(apipe);
 
-        //-Esperar
+        //-Caso en el que hay que esperar
         if (rc_wait) {
             rc = fork();
-            //Error
-            if (rc < 0){
-                prinf("Error creando al hijo"); //preg que hacemos 
-            }
-            
+            assert(!(rc < 0));
             //Hijo
-            else if (rc == 0){
+            if (rc == 0){
                 execute_scommand(cmd);
             }
 
             //Padre
             else{
-                rc_wait = wait(NULL); //porque esta rc_wait ?? para control de error ?
-            }   
-            
-        //-NO esperamos
-        } else{
-            if (rc_wait) {
-                rc = fork();
-                //Error
-                if (rc < 0){
-                    prinf("Error creando al hijo"); //preg que hacemos 
-                }
-                
-                //Hijo
-                else if (rc == 0){
-                    execute_scommand(cmd);
-                }
-
-                //Padre
-                else{
-                                       
-                }
-                
-                
+                rc_wait = wait(NULL);
             }
+            //+++Verificar que el fork no explote+++
+
+
+        //-Caso en el que NO esperamos
+        } else{
+            //+++COMPLETAR+++
+        }
+
+    pipeline_destroy(apipe);
     }
-    pipeline_destroy(apipe); //cheaquear si esta bien aca
 }
 
 /*

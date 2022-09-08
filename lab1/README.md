@@ -9,8 +9,4 @@ Integrantes:
 -Bruno Volpini
 -Ignacio Ramirez
 -Tomas Marmay
-<<<<<<< HEAD
 -Kevin Prieto
-=======
--<desconocido>
->>>>>>> a6d04bbd7f548019e2a153b632fbf73183a34118
