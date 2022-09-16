@@ -6,124 +6,151 @@
 #include "command.h"
 #include "builtin.h"
 #include "strextra.h"
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include "tests/syscall_mock.h"
+#define READ 0 
+#define WRITE 1 
 
-static bool is_redirIn(scommand cmd){
-    return (scommand_get_redir_in(cmd) == NULL);
-}
-
-static bool is_redirOut(scommand cmd){
-    return (scommand_get_redir_out(cmd) == NULL);
-}
-
-static void free_mem(scommand cmd, char **argument_list, unsigned int length){
-    char *aux;
-    scommand_destroy(cmd);
-    for (unsigned int i = 0u; i < length + 1; i++){
-        aux = argument_list[i];
-        free(aux);
-    }
-    aux = NULL;
-    free(argument_list);
-    argument_list = NULL;
-}
+char *invalid_cmd = "Ingrese un comando valido \n";
+char *pipe_error = "Error abriendo el pipe \n";
+char *fork_error = "Error ejecutando fork \n";
+char *dup2_error = "Error en dup2";
+char *close_pipe_error = "Error cerrando el pipe";
+//FALTA COMPLETAR
+//PREGUNTAR SI TENGO QUE HACER UN RETURN CUANDO SALE UN ERROR
+//PREGUNTAR SI ES NECAESARIOS HACER LOS COMANDOS INTERNOS FUERA DEL FORK(NO DEJAN HIJOS HUERFANOS)
+//ARREGLAR EL ERROR DE EXIT
+//FALTA REDIRECTORES
+//CUANDO TODO ESTE TERMINADO ELIMINAR COMENTARIOS INNECESARIOS
 
 static char **exec_cmd_parsing(unsigned int length, scommand cmd){
-    char *aux;
-    char **argument_list = malloc(length * sizeof(char *));
+    char **argument_list = calloc(length + 1, sizeof(char));
 
     //Parseo los argumentos del cmd en la forma que execvp() los necesita
     for (unsigned int i = 0u; i < length; i++) {
-        aux = scommand_front(cmd);
-        argument_list[i] = malloc(strlen(aux));
+        argument_list[i] = strdup(scommand_front(cmd));
         scommand_pop_front(cmd);
-
-        // Agrega NULL como ultimo elemento del array
-        if (i == (length-1)) {
-            argument_list[i + 1u] = malloc(0);
-            argument_list[i+1] = NULL;
-        }
     }
+
+    // Agrega NULL como ultimo elemento del array
+    argument_list[length] = NULL;
     return argument_list;
 }
 
 static void execute_scommand(scommand cmd) {
     assert(cmd != NULL);
-    char **argument_list;
-    unsigned int length;
-    int fd[2]; 
-
-    // Si es interno, usa las funciones de builtin para correr el comando
-    if (builtin_is_internal(cmd)) {
-        builtin_run(cmd);
-
-    // Sino, usa execvp()
-    } else {       
-         
-        length = scommand_length(cmd);
-        
-        argument_list = exec_cmd_parsing(length,cmd);
-
-        /*
-        //aca tengo que ver si usa los redirecores o no
-        if() {
-         
-        //ver que hacer con toda esta parte
-        } else {
-        // Ejecuta el comando
-        if (execvp(argument_list[0], argument_list) == -1) { exit(EXIT_FAILURE) }; // o va un assert ?
-        }
-        */
-
-        //Libera memoria
-        free_mem(cmd,argument_list,length);
-    }
+    unsigned int length = scommand_length(cmd);
+  
+    char **argument_list = exec_cmd_parsing(length,cmd);
+  
+    if (execvp(argument_list[0], argument_list) == -1) { write(STDOUT_FILENO,invalid_cmd,strlen(invalid_cmd)); } 
 }
 
-
-//al principio no iria un if viendo si es interno y llamando al builtin
 void execute_pipeline(pipeline apipe) {
     assert(apipe != NULL);
-    unsigned int length = pipeline_length(apipe);
-    scommand cmd;
-    int rc_wait = 0;
-    int rc = 0;
-    char *redir_in,redir_out;
 
-    for (unsigned int i = 0u; i < length; i++){
-        cmd = pipeline_front(apipe);
+    if (pipeline_is_empty(apipe)) {
+        write(STDOUT_FILENO,invalid_cmd,strlen(invalid_cmd)); 
+        if(apipe != NULL) { apipe = NULL; }
+    } else if (builtin_alone(apipe)) {
+        builtin_run(pipeline_front(apipe));
         pipeline_pop_front(apipe);
-        rc_wait = pipeline_get_wait(apipe);
+    } else {
 
-        //-Caso en el que hay que esperar
-        if (rc_wait) {
-            rc = fork();
-            assert(!(rc < 0));
-            //Hijo
-            if (rc == 0){
-                execute_scommand(cmd);
+        unsigned int length = pipeline_length(apipe); //cantidad de comandos simples
+        scommand cmd = pipeline_front(apipe);
+        bool have2_wait = pipeline_get_wait(apipe);
+        int fd1[2],fd2[2];
+        int status,pid;
+
+        if (pipe(fd1) == -1) { write(STDOUT_FILENO,pipe_error,strlen(pipe_error));} //Comunicar primer y segundo comando
+        pid = fork();
+
+        /* Hijo: ejecuta primer comando */
+        if (pid == 0){
+            if (length > 1){
+                /* Preparar la entrada/salida */
+                close(fd1[READ]);
+                
+                dup2(fd1[WRITE],STDOUT_FILENO);
+                close(fd1[WRITE]);
+
             }
+            /* Ejecuta */
+            //execlp("/bin/ls", "ls","-l", NULL);
+            (builtin_is_internal(cmd)) ? builtin_run(cmd) : execute_scommand(cmd);
+        }
 
-            //Padre
-            else{
-                rc_wait = wait(NULL);
-            }
-            //+++Verificar que el fork no explote+++
+        else if( pid == -1 ){ write(STDOUT_FILENO,fork_error,strlen(fork_error));}
+        
+        /*Padre: sigue con la ejecucion*/
+        else{
+            length = length - 1; /* Ya se ejecuto un comando*/
+            if (length > 0){
+            
+                close(fd1[WRITE]);  
+                
+                pipeline_pop_front(apipe);
+                cmd = pipeline_front(apipe);
 
+                if (pipe(fd2) == -1) { write(STDOUT_FILENO,pipe_error,strlen(pipe_error)); }  
+                pid = fork();
 
-        //-Caso en el que NO esperamos
-            // no esperar signifa hacerlo por background enotnces no esperar seria hacer lo mismo que arriba pero sin el wait 
-        } else{
-            rc = fork();
-            assert(!(rc < 0));
-            //Hijo
-            if (rc == 0){
-                execute_scommand(cmd); //no me ejecutaria un comando y despues se muere ? 
+                /* Hijo: ejecuta segundo comando */
+                if (pid == 0){
+                    /* Preaparar la entrada/salida */
+
+                    dup2(fd1[READ],STDIN_FILENO);
+                    close(fd1[READ]);
+
+                    if (length > 1){
+                        close(fd2[READ]);
+                        dup2(fd2[WRITE],STDOUT_FILENO);
+                        close(fd2[WRITE]);
+                    }
+                    /* Ejecuta */
+                    //execlp("/bin/grep", "grep", "u", NULL);
+                    (builtin_is_internal(cmd)) ? builtin_run(cmd) : execute_scommand(cmd);
+                }
+
+                else if ( pid == -1 ){ write(STDOUT_FILENO,fork_error,strlen(fork_error)); }
+                
+                else{
+                    length = length - 1; /* Ya se ejecutaron dos comandos*/ 
+                    close(fd1[READ]);
+                
+                    if (length > 0){
+                        close(fd2[WRITE]);
+
+                        pipeline_pop_front(apipe);
+                        cmd = pipeline_front(apipe);        
+
+                        pid = fork();
+                        /* Hijo: ejecuta segundo comando */
+                        if (pid == 0){
+                            /* Preaparar la entrada/salida */
+                            dup2(fd2[READ],STDIN_FILENO);
+                            close(fd2[READ]);
+
+                            /* Ejecuta */
+                            execlp("/usr/bin/wc", "wc", NULL);
+                            //(builtin_is_internal(cmd)) ? builtin_run(cmd) : execute_scommand(cmd);
+                        }
+                        else if ( pid == -1 ){ write(STDOUT_FILENO,fork_error,strlen(fork_error)); }
+                    }
+                }
+
             }
         }
- 
-    }
-    if(!pipeline_is_empty(apipe)) {
-        pipeline_destroy(apipe);
+
+        close(fd2[READ]);
+        if (have2_wait) {
+            wait(&status);
+            wait(&status);
+            wait(&status);
+         }
     }
 }
-

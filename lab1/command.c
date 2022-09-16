@@ -23,21 +23,21 @@ scommand scommand_new(void) {
     return result;
 }
 
-//Requires: self != NULL preguntar si es con assert o if 
 //Chequear con valgrind si esta bien el free del queue
 scommand scommand_destroy(scommand self){
     assert(self != NULL);
-    if (self != NULL){
-        free(self->redir_in);
-        self->redir_in = NULL;
-        
-        free(self->redir_out);
-        self->redir_out = NULL;
-        
+
+    free(self->redir_in);
+    self->redir_in = NULL;
+    
+    free(self->redir_out);
+    self->redir_out = NULL;
+
+    if (self->list != NULL){    
         g_queue_free(self->list);
         self->list = NULL;
-        self = NULL;
     }
+    self = NULL;
     return self;
 }
 
@@ -55,11 +55,9 @@ void scommand_push_back(scommand self, char * argument){
     
     assert(!scommand_is_empty(self));
 }
-//pregutar si esta bien el assert
+
 void scommand_pop_front(scommand self){
     assert(self!=NULL && !scommand_is_empty(self));
-    char * aux = scommand_front(self);
-    free (aux);
     g_queue_pop_head(self->list);
 }
 
@@ -76,16 +74,14 @@ void scommand_set_redir_out(scommand self, char * filename){
 /* Proyectores */
 bool scommand_is_empty(const scommand self){
     assert(self != NULL);
-    bool result = g_queue_is_empty(self->list);
+    bool result = (self->list == NULL) ? true : g_queue_is_empty(self->list);
     return result;
 }
 
 unsigned int scommand_length(const scommand self){
     assert(self!=NULL);
-    unsigned int length = 0u;
-    length = (self->redir_in != NULL) ? length + 1u : length;
-    length = (self->redir_out != NULL) ? length + 1u : length;
-    length = length + (unsigned int)g_queue_get_length(self->list); 
+    unsigned int length;
+    length = (self->list == NULL) ? 0u : (unsigned int)g_queue_get_length(self->list);
     assert((length == 0u) == scommand_is_empty(self));
     return length;
 }
@@ -109,40 +105,57 @@ char * scommand_front(const scommand self){
 }
 
 char * scommand_to_string(const scommand self){
-    char *str = strdup("");
-
+    char *comillas = "";
+    char *c1 = " > ";
+    char *c2 = " < ";
+    char *str;
+    char *aux;
     if (self != NULL){
-
-        unsigned int length = g_queue_get_length(self->list);
+        unsigned int length = scommand_length(self);
         if (length > 0){
-            for (unsigned int i = 0u; i < g_queue_get_length(self->list); i++){
+            str = "";
+            for (unsigned int i = 0u; i < length; i++){
+                aux = str;
+                str = strmerge(str," ");
                 str = strmerge(str,(char*)g_queue_peek_nth(self->list,(guint)i));
-                if (i < g_queue_get_length(self->list) -1) {
-                    str = strmerge(str, " ");
+                if (i != 0u) { free(aux) ;}
+                if (i < length -1) {
+                    aux = str;
+                    str = strmerge(str,comillas);
+                    free(aux);
                 }
                
             }
 
             if (self->redir_out != NULL){
-                str = strmerge(str, " > ");
+                aux = str;
+                str = strmerge(str, c1);
+                free(aux);
+                aux = str;
                 str = strmerge(str,self->redir_out);
-    
+                free(aux);
             }
 
             if (self->redir_in != NULL){
-                str = strmerge(str, " < ");
+                aux = str;
+                str = strmerge(str, c2);
+                free(aux);
+                aux = str;
                 str = strmerge(str,self->redir_in);
-                //str = strmerge(" ",str);    
+                free(aux);
             }
         }
+        else{
+            str = strdup("");    
+        }
+    }
+    else{
+        str = strdup("");
     }
    
     assert(scommand_is_empty(self) || scommand_get_redir_in(self)==NULL || scommand_get_redir_out(self)==NULL || strlen(str)>0);
     return str;
 }
-
-
-
 
 
 /*
@@ -188,11 +201,15 @@ pipeline pipeline_new(void) {
 }
 
 pipeline pipeline_destroy(pipeline self) {
-    assert(self != NULL);
-    g_queue_free(self->pipe);
+    assert(self != NULL);    
+    if (self->pipe != NULL){
+        g_queue_free(self->pipe);
+    }
     self->pipe = NULL;
     free(self);
-    return NULL;
+    self = NULL;
+    assert(self == NULL);
+    return self;
 }
 
 void pipeline_push_back(pipeline self, scommand sc) {
@@ -212,7 +229,7 @@ void pipeline_push_back(pipeline self, scommand sc) {
 void pipeline_pop_front(pipeline self) {
     assert(self != NULL && !pipeline_is_empty(self));
     scommand aux = pipeline_front(self);
-    free(aux);
+    scommand_destroy(aux);
     g_queue_pop_head(self->pipe);
 
 }
@@ -232,13 +249,14 @@ scommand pipeline_front(const pipeline self) {
 
 bool pipeline_is_empty(const pipeline self){
     assert(self != NULL);
-    return (g_queue_is_empty(self->pipe));
+    bool result = (self->pipe == NULL) ? true : g_queue_is_empty(self->pipe);
+    return result;
 }
 
 unsigned int pipeline_length(const pipeline self){
     assert(self!=NULL);
-    unsigned int length = 0u;
-    length = length + (unsigned int)g_queue_get_length(self->pipe); 
+    unsigned int length;
+    length = (self->pipe == NULL) ? 0u : (unsigned int)g_queue_get_length(self->pipe);
     assert((length == 0u) == pipeline_is_empty(self));
     return length;
 }
@@ -247,26 +265,40 @@ bool pipeline_get_wait(const pipeline self){
     assert(self != NULL);
     return self->wait;
 }
-//diferenciar el caso | con &
-char * pipeline_to_string(const pipeline self){
 
-    char *result = strdup("");
+char * pipeline_to_string(const pipeline self){
+    char *result;
+    char *c1 = " |";
+    char *c2 = " &";
+    char *aux;
     if (self != NULL){
-        unsigned int length = g_queue_get_length(self->pipe);
+        unsigned int length = pipeline_length(self);
         if (length > 0){
+            result = "";
             for (unsigned int i=0u; i < length; i++){
+                aux = result;
                 result = strmerge(result,scommand_to_string(g_queue_peek_nth(self->pipe,(guint)i)));    
+                if (i != 0u) { free(aux); }
                 if ( i < length -1){
-                    result = strmerge(result," | ");
+                    aux = result;
+                    result = strmerge(result,c1);
+                    free(aux);
                 }
             }
             if (self->wait == false){
-                result = strmerge(result, " &");
+                aux = result;
+                result = strmerge(result, c2);
+                free(aux);
             }
         }
-
+        else{
+            result = strdup("");
+        }
     }
     
+    else{
+        result = strdup("");
+    }
     assert(pipeline_is_empty(self) || pipeline_get_wait(self) || strlen(result)>0);
     return result;
 }

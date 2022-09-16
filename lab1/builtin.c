@@ -3,8 +3,10 @@
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 #include "builtin.h"
 #include "command.h"
+#include "tests/syscall_mock.h"
 
 
 // Preguntar si esta forma de checkear los comandos internos es correcta
@@ -21,11 +23,21 @@ const char* INTERNO[] = {"cd", "help", "exit"};
 bool builtin_is_internal(scommand cmd) {
     assert(cmd != NULL);
     bool result = false;
-    for(int i = 0; i < INTERNO_SIZE; i++){
-        if(strcmp(scommand_front(cmd), INTERNO[i]) == 0){
-            result = true;
+    char *aux;
+    int i = 0;
+    aux = strdup(scommand_front(cmd));
+    while(i < INTERNO_SIZE && !result){
+        if (!scommand_is_empty(cmd)){
+            if(strcmp(aux, INTERNO[i]) == 0){
+             result = true;
+            }
+            i++;
         }
+        else{
+            result = true;
+        }   
     }
+    free(aux);  
     return result;
 }
 
@@ -40,30 +52,37 @@ bool builtin_is_internal(scommand cmd) {
 bool builtin_alone(pipeline p) {
     assert(p != NULL);
     bool result = false;
-    if((pipeline_length(p) == 1 ) && builtin_is_internal(pipeline_front(p))) {
-        result = true;
+    if (pipeline_front(p) != NULL) {
+        if((pipeline_length(p) == 1 ) && builtin_is_internal(pipeline_front(p))) {
+            result = true;
+        }
     }
     return result;
 }
 
 
-static void read_help_file(){
+static void dump_help_commands(void){
 
-    FILE *help_file = fopen(".hidden/mybash_help.txt", "r");
-
-    if (help_file == NULL){
-        printf("Error opening the file"); //ver si conviene sacar por stderr
-        exit(EXIT_SUCCESS); // preguntar si no seria el exitfa
-    }
-
-    int response = fgetc(help_file);
-
-    while(response != EOF){
-        printf("%c", response);
-        response = fgetc(help_file);
-    }
-
-    fclose(help_file);
+    char *help_command = 
+                            "\n"
+                            "------------------------------------\n"
+                            "||||||||||||||||||||||||||||||||||||\n"
+                            "------------------------------------\n"
+                            "\n"
+                            "-Mybash version 2022 (FaMAF)\n"
+                            "-These shell commands are defined internally.  Type `help' to see this list.\n"
+                            "-Designed by Ignacio Ramirez, Bruno Volpini, Kevin PREGUNTAR APELLIDO and Tomas Marmay\n"  
+                            "\n"
+                            "(internal) COMMANDS:\n"
+                            "\n"
+                            "° help: COMPLETAR\n"
+                            "° cd : COMPLETAR DESCRIPCION\n"
+                            "° exit: COMPLETAR\n"
+                            "\n"
+                            "------------------------------------\n"
+                            "||||||||||||||||||||||||||||||||||||\n"
+                            "------------------------------------ \n";
+   printf("%s",help_command);
 }
 
 
@@ -77,17 +96,17 @@ void builtin_run(scommand cmd) {
     front = strdup(scommand_front(cmd));
 
     if(strcmp(front,INTERNO[0]) == 0) {
-            scommand_pop_front(cmd);
-            chdir(scommand_front(cmd));
-            scommand_destroy(cmd);
+        scommand_pop_front(cmd);
+        free(front);
+        front = strdup(scommand_front(cmd));
+        chdir(front);
+        //scommand_destroy(cmd);
+    } else if(strcmp(front,INTERNO[1]) == 0) {
+        //scommand_destroy(cmd);
+        dump_help_commands();
+    } else if(strcmp(front,INTERNO[2]) == 0) {
+        close(STDIN_FILENO);
     }
-     // Falta implementar "help" y "exit"
-    if(strcmp(front,INTERNO[1]) == 0) {
-        read_help_file();
-    }
-    if(strcmp(front,INTERNO[2]) == 0) {
-        printf("exit");
-    }
-
+    free(front);
 }
 

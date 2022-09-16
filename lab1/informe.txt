@@ -1,0 +1,25 @@
+Grupo 30
+# Nombre: grupo_sin_nombre
+
+### Integrantes
+- Marmay, Tomás 
+- Prieto, Kevin 
+- Ramirez, Ignacio 
+- Volpini, Bruno
+
+
+### ¿Cómo compilar?
+$ git clone https://irmrz@bitbucket.org/sistop-famaf/so22lab1g30.git
+$ cd so22lab1g30
+$ make
+$ ./mybash
+
+
+### Consideracion de los tests
+- Modificacion test_parsing.c (Linea 126): 'output == NULL' reemplazado por 'pipeline_length (output) == 1'
+
+
+### Comandos Probados
+
+
+### Syscalls usadas
