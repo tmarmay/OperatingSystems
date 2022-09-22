@@ -37,4 +37,46 @@ imprime 0 veces a porque cambia de proceso (mirar execv.c)
 
 ejercicio 7:
 argc = agrmuneto contador 
-argv = argumento values
+argv = vector de argumentos
+
+IMPORTANTE DE VER: argc no cuenta al ultimo elemento (null) 
+	Osea que el valor real de argc es argc + 1.
+
+a) el primer programa en el caso que solo se le pasa el argumento de la llamada al programa no hace nada (osea argc == 1). Si el argc > 1 lo que hace es pisar la ultima posicion de la lista de argumentos y vovler a llamar al programa (a travez de exevcp) pero con un argumento menos 
+	(resulto en ej7.c)
+b) en el caso en el que solo se llame al programa (./programa) no ahce nada. Si se lo llama con mas de un argumento (osea ./programa arg1 ..) hace un fork, mata al hijo y el padre alimina un argumento de argv (poniendo un null en una posicion mas baja) y con execvp llama a lo que quedo del programa
+	Resumiendo hace un fork y llama a la funcion por cada argumento que tiene 
+
+ejercicio 8:
+Al cerrar el fd stdout queda el indice 1 para file-descriptors vacio. dup lo que hace es una copia del file que le pasas al menor indice que este vacio, en este caso el 1, por lo que cambia la salida al archivo que le pasas
+	(ej8.c)
+Yo creo que dup no esta diseNado para justamente este ejemplo sino que para encontrar el menor fd. Justo en este caso coindice que en ambos programas asignas el fd 1.
+El dup lo que hace es duplicar el fd.
+
+ejercicio 9: 
+Crear un "arbol" de padres e hijos que crece exponencialemente. Pero como solamente hace el fork y ninguna otra operacion todos los padres/hijos usan la misma memoria porque el sistema operativo es lacy. Entonces es como que se ejecutaria un solo proceso
+RESUMEINDO: EN ESTE CASO NO PASA NADA, salvo cuando tiene que cerrar a todos los hijos ahi si tiene un gran uso de cpu (ej9.c)
+
+ejercicio 10:
+saco running a blocked: los procesos nunca terminarian y se llenaria la memeoria 
+saco blocked a ready: se quedaria trabado en input/output y nunca estaria en ready lo que implica que nunca se correria el proceso
+saco ready a running: tendrias  todos los porcesos preparados para correr pero nunca se ejecutrian 
+saco de running a ready: los procesos correrian hasta completarse y si alguno es infinito tiene el control completo del cpu
+
+ejercicio 11:
+falta
+
+ejercicio 12:
+a)verdadero, con proceso io-bound (ej time ifconfig)
+b)falso, cada proceso tiene su memoria virtual y esta asilada de otros procesos/os
+c)verdadera
+d)falso, porque hay isntrucciones que solo puede ejecutar el kernell
+e)verdadero, si hay un unico proceso o el so decide que continue el proceso que esta corriendo 
+f)falso, el pid 0 es el del so (El valor 0 del PID está reservado a la tarea ociosa del sistema, un proceso que se crea al arrancar el sistema y nunca puede finalizar.)
+g)verdadero
+h)falsa, en ese caso es cuando se generan los hijos hurfanos 
+i)verdadero, el hijo herada todo lo que esta arriba del fork entonces herada argv
+j)verdadera
+k:un proceso hijo que termina, no se puede liber de la tabla de procesos hasta que el padre no haya leido el exit status via wait
+k)verdadera, por eso cuando el padre muere y el hijo sigue vivo queda en la tabla de procesos sin terminar
+
