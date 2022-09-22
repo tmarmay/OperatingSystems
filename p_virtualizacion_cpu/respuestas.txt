@@ -1,16 +1,18 @@
+EL EJERCICIO SE RESULVE PLANTENADO UNA HIPOTESIS DE CUANTOS CORES TIENE Y PROBAR QUE AL MENOS NO ES FALSA
 ejercicio 1:
 time pi 1000000 > /dev/null 
 	/dev/null in Linux is a null device file. This will discard anything written to it, and will return EOF on reading.
 	anula la salida estandar en tiempo de ejecucion 
 	https://blog.desdelinux.net/que-es-devnull-y-como-puede-ayudarte/
 
-a) tine 4 diferentes walltime suponemos que se calculareon en cuatro nucleos distintos por eso tienen teimpos diferentes
-b) porque si por ej tiene 4 nucleos y 1 proceso si lo divide en 4 el tiempo del cpu puede llegar a ser mayor al del wall
-c) preguntar 
+a)
+b)
+c)  
 
 
 ejercicio 2:
-se dividenlas tareas entre diferentes cores (con varios nucleso) y suma todos los cpu time y eso es mas rapido que 
+TENES UN PROCESO CON MUCHOS HILOS QUE CADA UNO VA A PARAR A DIFERENTES CORES --> PUEDO PARALELIZAR 
+se dividenlas tareas entre diferentes cores (con varios nucleos) y suma todos los cpu time y eso es mas rapido que 
 
 ejercicio 3:
 cpu bound: 
@@ -30,7 +32,7 @@ c) registro del microprocesador = En arquitectura de ordenadores, un registro es
 	Pero si son memorias separadas, son independientes por lo que cambios no influshen 
 
 ejercicio 5:
-imprime 15 veces a 
+imprime 15 veces a (2^n, crecimiento exponencial)
 
 ejercicio 6:
 imprime 0 veces a porque cambia de proceso (mirar execv.c)
@@ -38,6 +40,9 @@ imprime 0 veces a porque cambia de proceso (mirar execv.c)
 ejercicio 7:
 argc = agrmuneto contador 
 argv = vector de argumentos
+
+OBS: --argc es como hacer argc = argc - 1
+     (0<--argc) tiene mayor procedencia -- que < | se llama predecremento 
 
 IMPORTANTE DE VER: argc no cuenta al ultimo elemento (null) 
 	Osea que el valor real de argc es argc + 1.
@@ -50,8 +55,11 @@ b) en el caso en el que solo se llame al programa (./programa) no ahce nada. Si 
 ejercicio 8:
 Al cerrar el fd stdout queda el indice 1 para file-descriptors vacio. dup lo que hace es una copia del file que le pasas al menor indice que este vacio, en este caso el 1, por lo que cambia la salida al archivo que le pasas
 	(ej8.c)
-Yo creo que dup no esta diseNado para justamente este ejemplo sino que para encontrar el menor fd. Justo en este caso coindice que en ambos programas asignas el fd 1.
+(yo)Yo creo que dup no esta diseNado para justamente este ejemplo sino que para encontrar el menor fd. Justo en este caso coindice que en ambos programas asignas el fd 1.
 El dup lo que hace es duplicar el fd.
+
+dup: un archivo esta en dos file descriptor diferentes 
+(profe)El open puede fallar por varias razones --> para eso sirve el dup y no se hace de la otra forma 
 
 ejercicio 9: 
 Crear un "arbol" de padres e hijos que crece exponencialemente. Pero como solamente hace el fork y ninguna otra operacion todos los padres/hijos usan la misma memoria porque el sistema operativo es lacy. Entonces es como que se ejecutaria un solo proceso
@@ -69,14 +77,16 @@ falta
 ejercicio 12:
 a)verdadero, con proceso io-bound (ej time ifconfig)
 b)falso, cada proceso tiene su memoria virtual y esta asilada de otros procesos/os
-c)verdadera
-d)falso, porque hay isntrucciones que solo puede ejecutar el kernell
+c)verdadera, porque los registros son parte del estado
+d)falso, porque hay isntrucciones que solo puede ejecutar el kernell (ej: la instruccion que cambia la tabla de segmentos)
 e)verdadero, si hay un unico proceso o el so decide que continue el proceso que esta corriendo 
-f)falso, el pid 0 es el del so (El valor 0 del PID está reservado a la tarea ociosa del sistema, un proceso que se crea al arrancar el sistema y nunca puede finalizar.)
+f)falso, el pid 0 es el del init (El valor 0 del PID está reservado a la tarea ociosa del sistema, un proceso que se crea al arrancar el sistema y nunca puede finalizar.)
 g)verdadero
 h)falsa, en ese caso es cuando se generan los hijos hurfanos 
-i)verdadero, el hijo herada todo lo que esta arriba del fork entonces herada argv
-j)verdadera
+(yo)i)verdadero, el hijo herada todo lo que esta arriba del fork entonces herada argv
+(profe)falso, cuando el hijo hace el exit se comunica con el padre
+(yo)j)verdadera
+(profe)falso, cuando se llama al exec con una argumento no valido s
 k:un proceso hijo que termina, no se puede liber de la tabla de procesos hasta que el padre no haya leido el exit status via wait
-k)verdadera, por eso cuando el padre muere y el hijo sigue vivo queda en la tabla de procesos sin terminar
+k)verdadera, por eso cuando el padre muere y el hijo sigue vivo queda en la tabla de procesos sin terminar --> zombie
 
