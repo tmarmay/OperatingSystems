@@ -1,0 +1,40 @@
+ejercicio 1:
+time pi 1000000 > /dev/null 
+	/dev/null in Linux is a null device file. This will discard anything written to it, and will return EOF on reading.
+	anula la salida estandar en tiempo de ejecucion 
+	https://blog.desdelinux.net/que-es-devnull-y-como-puede-ayudarte/
+
+a) tine 4 diferentes walltime suponemos que se calculareon en cuatro nucleos distintos por eso tienen teimpos diferentes
+b) porque si por ej tiene 4 nucleos y 1 proceso si lo divide en 4 el tiempo del cpu puede llegar a ser mayor al del wall
+c) preguntar 
+
+
+ejercicio 2:
+se dividenlas tareas entre diferentes cores (con varios nucleso) y suma todos los cpu time y eso es mas rapido que 
+
+ejercicio 3:
+cpu bound: 
+i/o bound: 
+
+real < user: The process is CPU bound and takes advantage of parallel execution on multiple cores/CPUs.
+real ≈ user: The process is CPU bound and takes no advantage of parallel exeuction.
+real > user: The process is I/O bound. Execution on multiple cores would be of little to no advantage.
+https://unix.stackexchange.com/questions/40694/why-real-time-can-be-lower-than-user-time
+
+ejercicio 4:
+a) se matiene pues es una copia del padre
+b) son independientes, si cambio una no afecta a la otra (ver ej variables_fork)
+PREGUNTAR
+c) registro del microprocesador = En arquitectura de ordenadores, un registro es una memoria de alta velocidad y poca capacidad, integrada en el microprocesador, que permite guardar transitoriamente y acceder a valores muy usados, generalmente en operaciones matemáticas = cache 
+	Si comparten el registropadre/hijo si va a afectar porque uno va a editar y el otro despues va a leer 
+	Pero si son memorias separadas, son independientes por lo que cambios no influshen 
+
+ejercicio 5:
+imprime 15 veces a 
+
+ejercicio 6:
+imprime 0 veces a porque cambia de proceso (mirar execv.c)
+
+ejercicio 7:
+argc = agrmuneto contador 
+argv = argumento values
