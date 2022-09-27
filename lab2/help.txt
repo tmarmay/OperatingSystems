@@ -1,1 +1,23 @@
 sudo apt-get install -y gcc-riscv64-linux-gnu
+user.h declara sys-calls 
+añadir en makefile las sys que correspondan 
+
+
+
+/*Hacer sys call*/
+(kernel)
+	definir en syscall.h
+	poner en el arreglo en syscall.c
+	implementar en sysproc (hacerlo en archivo aparte siguiendo el formato)
+	types.h define sinonimos 
+	
+(user) 
+	definir en user.h
+	usys.pl agragar las entradas
+
+incluir en los lugares donde haga falta.
+agragar archivos en Makefile
+
+
+
+programas de usuarios consumen las llamas al sistema 
