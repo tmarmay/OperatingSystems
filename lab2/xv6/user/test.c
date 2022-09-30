@@ -2,6 +2,21 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 #include <stddef.h>
+
+
+/*
+FALTA:
+hacer el .h de semaforo
+manejo de errores
+detectar si un semaforo esta en uso o no (poner un bool)
+fucion del ping-pong (que es en base lo que esta abajo)
+escribir bien las variables en semaforo.c
+implementar el destroy
+informe 
+
+*/
+
+
 int
 main(int argc, char *argv[])
 {
