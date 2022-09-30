@@ -32,10 +32,11 @@ sys_sem_open(void)
     if((t[sem] = (struct semaphore_t*)kalloc()) == 0) { return 0;}
 
     /*Nombre como "identificador" y un spinlock*/
-    initlock(&t[sem]->sl, "semaforo");
+    initlock(&t[sem]->sl, "sem");
 
     t[sem]->value = value;
     //printf("value de %d es %d\n", sem,t[sem]->value);
+    
     return 1;
 }
 
@@ -49,15 +50,10 @@ sys_sem_open(void)
     acquire(&t[sem]->sl);
     //printf("primer valor de value anres del up %d \n",t[sem]->value);
     if (t[sem]->value == 0){
-        t[sem]->value = t[sem]->value + 1;
-        printf("levanto a a %d\n", sem);
-        wakeup(&t[sem]->sl);
+        wakeup(&t[sem]);
     }
-    else{
-        t[sem]->value = t[sem]->value + 1;
-    }
+    t[sem]->value = t[sem]->value + 1;
         
-
     //printf("segundo valor de value desp del up %d \n",t[sem]->value);
     release(&t[sem]->sl);
     return 1;
@@ -73,8 +69,7 @@ sys_sem_down(void)
     //printf("primer valor de value anres del down %d \n",t[sem]->value);
     
     if (t[sem]->value == 0){
-        printf("pongo a dormir a %d\n", sem);
-        sleep(&t[sem]->value,&t[sem]->sl);
+        sleep(&t[sem],&t[sem]->sl);
     }
     else{
         t[sem]->value = t[sem]->value -1;
