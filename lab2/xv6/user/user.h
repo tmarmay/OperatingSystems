@@ -24,6 +24,8 @@ int sleep(int);
 int uptime(void);
 /*Agragado por el equipo*/
 int sem_open(int,int);
+int sem_up(int);
+int sem_down(int);
 
 
 // ulib.c

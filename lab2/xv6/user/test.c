@@ -1,10 +1,32 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
-
+#include <stddef.h>
 int
 main(int argc, char *argv[])
 {
-  printf("%d \n",sem_open(atoi(argv[1]),atoi(argv[2])));
+  sem_open(atoi(argv[1]),atoi(argv[2]));
+  //sem_open(0,0);
+  //sem_open(1,0);
+
+  int rc = fork();
+  
+  if (rc == 0){
+    //sem1
+    printf("1  \n");
+    sem_up(0);
+    sem_up(0);
+    sem_up(0);
+  
+    
+    //return 0;
+  }
+  else{
+    //sem0
+    sem_down(0);
+    printf("2 \n");
+
+    //return 0;
+  }
   exit(0);
 }

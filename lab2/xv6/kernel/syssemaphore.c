@@ -6,10 +6,16 @@
 #include "spinlock.h"
 #include "proc.h"
 
-#define MAX_QTY_SEM 5
+typedef struct semaphore_t *semaphore;
 
-/* Inicializacion de semaforo*/
-int semaphore[MAX_QTY_SEM]; // Setea al array en 0
+struct semaphore_t {
+    int value;
+    struct spinlock sl;
+};
+
+/*Arreglo de punteros a la estructura semaphore_t*/
+#define MAX_SEMAPHORE 2
+semaphore t[MAX_SEMAPHORE];
 
 uint64
 sys_sem_open(void)
@@ -19,43 +25,62 @@ sys_sem_open(void)
     int value;
     argint(1,&value);
 
-    if (sem < MAX_QTY_SEM){
-        semaphore[sem] = value;
-        printf("%d, %d\n",sem,value);
-        return semaphore[sem];
-    }
-    else{
-        printf("Error: Maximo de semaforos superado \n");
-        return 0;
-    }
+    /*Rango posibles de semaforos*/
+    if (!((sem >= 0) && (sem < MAX_SEMAPHORE))) { return 0;}
+    
+    /*Pido memoria para un semaforo*/
+    if((t[sem] = (struct semaphore_t*)kalloc()) == 0) { return 0;}
+
+    /*Nombre como "identificador" y un spinlock*/
+    initlock(&t[sem]->sl, "semaforo");
+
+    t[sem]->value = value;
+    //printf("value de %d es %d\n", sem,t[sem]->value);
+    return 1;
 }
 
 
-uint64 
-sys_sem_up(void)
-{
+ uint64 
+ sys_sem_up(void)
+{    
+    
     int sem;
     argint(0,&sem);
-    semaphore[sem] = semaphore[sem] + 1;
-    if (semaphore[sem] == 0)
-    {
-        /*Falta desbloquear pocesos*/
-        //release();
+    acquire(&t[sem]->sl);
+    //printf("primer valor de value anres del up %d \n",t[sem]->value);
+    if (t[sem]->value == 0){
+        t[sem]->value = t[sem]->value + 1;
+        printf("levanto a a %d\n", sem);
+        wakeup(&t[sem]->sl);
     }
-    
-    return sem;
+    else{
+        t[sem]->value = t[sem]->value + 1;
+    }
+        
+
+    //printf("segundo valor de value desp del up %d \n",t[sem]->value);
+    release(&t[sem]->sl);
+    return 1;
 }
 
 uint64
 sys_sem_down(void)
 {
+    
     int sem;
     argint(0,&sem);
-    semaphore[sem] = semaphore[sem] - 1;
-    if (semaphore[sem] == 0)
-    {
-        /*Falta bloquear pocesos*/
-        //adquire();
+    acquire(&t[sem]->sl);
+    //printf("primer valor de value anres del down %d \n",t[sem]->value);
+    
+    if (t[sem]->value == 0){
+        printf("pongo a dormir a %d\n", sem);
+        sleep(&t[sem]->value,&t[sem]->sl);
     }
-    return sem;
+    else{
+        t[sem]->value = t[sem]->value -1;
+    }
+    //printf("segundo valor de value desp del down %d \n",t[sem]->value);
+    release(&t[sem]->sl);
+    return 1;
+
 }
