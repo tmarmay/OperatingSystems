@@ -1,0 +1,25 @@
+-xv6 tiene una scheduling round robin 
+	(round robin): a cada proceso le asigna una porcion de tiempo equitativa y ordenada, tratando a todos los procesos con la misma prioridad. Como si fuera una "lista de procesos" va de inicio a fin y vuelve a empezar atendiendo a todos
+	(quantum): tiempo que le da el SO a cada proceso para correr antes del contact swich. Esta medido en tick
+	(ticks): is a fairly arbitrary unit of time, determine by how often a hardware timer generate interrupts
+		quantum = N*Tick (los ticks son variables)
+		Tick = M 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IDEAS PARA PLANIFICAR:
+-si el proceso ya termino y le sobro tiempo que le devuelva el control al SO
+
