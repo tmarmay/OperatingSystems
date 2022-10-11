@@ -1,0 +1,132 @@
+
+ejercicio1:
+-int i : stack o registro
+-register int s = 0 : que porfavor vaya a un registro, en caso de que no haya un registro va al stack
+-int *b = calloc.. : b esta en el stack pero a lo que apunta b esta en el heap 
+-argc,argv: esta en el stack, tanto el puntero como lo que apunta (los valores los pone el kernel al cargar el programa en memoria)
+-segmento de programa esta en no-read y no-write
+-int a[N] (definido como programa) esta en un segmento que se almacenan las variables globales
+-.bss: almacena variables globales y variables statucas de las funciones  
+#define N 200: no esta en ningun lado porque es un remplazo
+
+ejercicio2:
+-get: no hay garantina del largo que va a pisar 
+-a s le falta el \0 entonces nunca termina el string
+-strdup pierde la referenfica al puntero del malloc y hace un memory leak
+-mal pedida la memoria; 
+
+ejercicio3:
+sys-call: brk()
+a)falso, es una libreria de c
+b)falso, no siempre llama a la sys-call para pedir memoria, solo lo hace cuando falta espacio o no entra en la free list
+c)verdadero
+d)	a)falso, no es una sys-call
+	b)falso
+	c)verdadero
+e)falso, depende de la estructura interna del malloc.ademas en los casos que malloc(x) pida memoria y justo haya un bloque libre tiene costo 0
+
+ejercicio4:
+base = 4096 bounds=256
+tengo todos los fech de las instrucciones: 0,6,8,10,13
+movl $diviseur,dividende : Storing the address of $diviseur into the memory at dividende
+movl %1, %%ebx : will move the first parameter to the second parameter.
+movl $128,%ebx (hace un ingreso a memoria para escribir en ebx 128)
+movl (%ebx),%eax (hace un ingreso a memoria para escribir el contenido del primero en el segundo)
+shll $1, %ebx (hace un acceso a memoria para shiftear el contenido del registro)
+
+ejercicio5:
+fragmentacion interna: <La fragmentación interna es la pérdida de espacio en disco debido al hecho de que el tamaño de un determinado archivo sea inferior al tamaño del clúster, ya que teóricamente el archivo estaría obligado a ser referenciado como un clúster completo
+	osea que el programa es mas chico que el bloque de memoria asignado
+fragmentacion externa: la fragmentación externa ocurre cuando hay una cantidad suficiente de área dentro de la memoria para satisfacer la solicitud de memoria de un método. sin embargo, la solicitud de memoria del proceso no se puede cumplir porque la memoria ofrecida es de manera no contigua
+	osea tengo espacio pero no continuo entonces no el proceso no entra
+
+supongamos que tenemos un mapa de memoria de 6G, (que empieza de 0 a 6G):
+el codigo tine un bounds-limit de 0 a 1G
+el heap tiene un bounds-limit de 1G a 3G
+el stack tiene un bounds-limit de 3G a 6G
+
+interna: con procesos de 64MG voy a tener bloques muy grandes para programas muy chicos
+externa: ....
+
+ejercicio6:
+-statica : si o si con una tabla
+-dinamica: ayuda del hardware
+
+ejercicio7:
+a)verdadero: porque si no lo fueran cualquier proceso pudiera tocar la memoria que quiera
+b)falso, uno por cada cpu
+
+ejercicio8:
+FALTA --> HACER PARA PRACTICAR
+culpa del 16386 que se pasa por 2 b necesita otra pagina
+
+ejercicio9:
+free-list : 10 KiB, 4 KiB, 20 KiB, 18 KiB, 7 KiB, 9 KiB, 12 KiB, 15 KiB
+a)(First-fit): (12 KiB) le darian el bloque de 20KiB
+	       (10KiB) le darian el primer bloque 10KiB
+	       (9KiB) le darian el bloque de 18 KiB
+
+b)(Best-fit): (12 KiB) le darian el bloque de 12KiB
+               (10KiB) le darian el primer bloque 10KiB
+               (9KiB) le darian el bloque de 9KiB
+
+c)(Worst-fit): (12 KiB) le darian el bloque de 20KiB
+               (10KiB) le darian el primer bloque 18KiB
+               (9KiB) le darian el bloque de 15KiB
+
+(La asignación de "Next-fit" difiere de la de primer ajuste en que un asignador de primer ajuste comienza su búsqueda de espacio libre en un extremo fijo de la memoria, mientras que un asignador de próximo ajuste comienza su búsqueda donde antes dejó de buscar)
+d)(Next-fit): (12 KiB) le darian el bloque de 20KiB
+               (10KiB) le darian el primer bloque 18KiB
+               (9KiB) le darian el bloque de 9KiB
+
+
+ejercicio10:
+TDB es una cache 
+( (0.95*10) + (0.05*120) ) = Promedio 
+
+ejercicio11:
+HACERLO PARA PRACTICAR 
+-para hacer un TLB miss, la pagina no de debe encontrar en la TLB
+-cada pagina ocupa 32k
+-tlb tiene 64 entradas
+M = 32K y el N da igual 
+a)cada acceco a memoria virtual necesita un acceso a la tabla de segmentacion 
+b)si cambia algo porque la tlb es fully associative y en ese caso unificaria la pagina en una grade y la traeria toda junta 
+
+ejercicio12:
+FALTA HACER
+
+ejercicio13:
+FALTA HACER
+
+ejercicio 14:
+FALTA HACER
+
+ejercicio 15:
+porque las mismas pages tables ya ocupan lugar y ya simplemente con eso no dan las 4GB, sin contar el espacio que usa el SO
+
+ejercicio 16:
+FALTA HACER
+
+EJERCICIO 17:
+a)verdadero, sino se mezclarian la memoria de los procesos
+b)FALSO, falta justificar
+c)verdadero
+d)falso, sino no seria por def una funcion 
+e)verdadero, para compatir codigo o cuando haces un fork 
+f)verdadero, JUSTIFICAR
+g)verdadero, para no repetir mismo codigo
+h)verdadero 
+i)falso, por tener el cr3 y por el contact swich 
+j)verdadero
+k)falso, depende los casos, si es el caso en el que no se edita nada no es caro sino que barato en caso contrario si lo es 
+l)CHEQUEAR falso, una vez botea nada puede tocar la memoria fisica, la unica forma es con la tabla y eso es MMU
+m)falso, porque no es una funcion biyectiva
+n)COMPLETAR
+
+ejercicio 18:
+CPMPLETAR
+
+ejercicio 19:
+COMPLEATAR
+
