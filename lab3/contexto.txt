@@ -5,14 +5,27 @@
 		quantum = N*Tick (los ticks son variables)
 		Tick = M 
 
+-interrupciones: kernelvec.S
+-int interval = 1000000; // cycles; about 1/10th second in qemu. def in start.c
+
+-cuanto demora el cambio de contexto
+lo que demore la funcion switch
 
 
+scheduling in xv6:
+https://github.com/marf/xv6-scheduling/blob/master/README.md
+
+osted:
+https://pages.cs.wisc.edu/~kzhao32/projects/cs537p2b_xv6Scheduler.pdf
+
+diferentes scheduling en xv6:
+https://github.com/marf/xv6-scheduling/blob/master/README.md
+
+idea general de funcionamiento de xv6:
+https://www.youtube.com/watch?v=fEnWqibCwo0&ab_channel=MythiliVutukuru
 
 
-
-
-
-
+en trap.c es donde mata a un proceso si se pasa del quantum
 
 
 
@@ -22,4 +35,4 @@
 
 IDEAS PARA PLANIFICAR:
 -si el proceso ya termino y le sobro tiempo que le devuelva el control al SO
-
+-https://github.com/jshuhnow/jv6
