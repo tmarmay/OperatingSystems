@@ -1,18 +1,26 @@
 EL EJERCICIO SE RESULVE PLANTENADO UNA HIPOTESIS DE CUANTOS CORES TIENE Y PROBAR QUE AL MENOS NO ES FALSA
+
+
+Real is wall clock time - time from start to finish of the call. This is all elapsed time including time slices used by other processes and time the process spends blocked (for example if it is waiting for I/O to complete).
+
+User is the amount of CPU time spent in user-mode code (outside the kernel) within the process. This is only actual CPU time used in executing the process. Other processes and time the process spends blocked do not count towards this figure.
+
+Sys is the amount of CPU time spent in the kernel within the process. This means executing CPU time spent in system calls within the kernel, as opposed to library code, which is still running in user-space. Like 'user', this is only CPU time used by the process. See below for a brief description of kernel mode (also known as 'supervisor' mode) and the system call mechanism
+
 ejercicio 1:
 time pi 1000000 > /dev/null 
 	/dev/null in Linux is a null device file. This will discard anything written to it, and will return EOF on reading.
 	anula la salida estandar en tiempo de ejecucion 
 	https://blog.desdelinux.net/que-es-devnull-y-como-puede-ayudarte/
 
-a)
-b)
-c)  
+a) Viendo la instancia 4 podemos deducir que si fuera 1 solo CPU le daria 1/4 del tiempo a c/u y todos demorarian lo mismo. Pero en cambio podemos ver que hay dos grupos de a dos que demoran lo mismo, por lo que podemos concluir que hay dos cpus donde en cada uno le da 1/2 del tiempo a cada pi
+b) Porque por ej si hubiera dos procesos y un solo cpu y pi cae justo cuando empieza el otro proceso va a tener que esperarlo y luego correr pi
+c) Cuanto mas grande sea la medicion indica que tiene mas procesos en la lista de procesos y que mas pospone a pi, ya que es io-bound
 
 
 ejercicio 2:
 TENES UN PROCESO CON MUCHOS HILOS QUE CADA UNO VA A PARAR A DIFERENTES CORES --> PUEDO PARALELIZAR 
-se dividenlas tareas entre diferentes cores (con varios nucleos) y suma todos los cpu time y eso es mas rapido que 
+se dividenlas tareas entre diferentes cores (con varios nucleos) y suma todos los cpu time. Por lo cual se hace la tarea mas rapido y el real time es menor. 
 
 ejercicio 3:
 cpu bound: 
@@ -29,7 +37,7 @@ b) son independientes, si cambio una no afecta a la otra (ver ej variables_fork)
 PREGUNTAR
 c) registro del microprocesador = En arquitectura de ordenadores, un registro es una memoria de alta velocidad y poca capacidad, integrada en el microprocesador, que permite guardar transitoriamente y acceder a valores muy usados, generalmente en operaciones matemáticas = cache 
 	Si comparten el registropadre/hijo si va a afectar porque uno va a editar y el otro despues va a leer 
-	Pero si son memorias separadas, son independientes por lo que cambios no influshen 
+	Pero si son memorias separadas, son independientes por lo que cambios no influyen
 
 ejercicio 5:
 imprime 15 veces a (2^n, crecimiento exponencial)
@@ -86,7 +94,7 @@ h)falsa, en ese caso es cuando se generan los hijos hurfanos
 (yo)i)verdadero, el hijo herada todo lo que esta arriba del fork entonces herada argv
 (profe)falso, cuando el hijo hace el exit se comunica con el padre
 (yo)j)verdadera
-(profe)falso, cuando se llama al exec con una argumento no valido s
+(profe)falso, cuando se llama al exec con una argumento no valido 
 k:un proceso hijo que termina, no se puede liber de la tabla de procesos hasta que el padre no haya leido el exit status via wait
 k)verdadera, por eso cuando el padre muere y el hijo sigue vivo queda en la tabla de procesos sin terminar --> zombie
 
