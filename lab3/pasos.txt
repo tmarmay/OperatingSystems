@@ -1,0 +1,16 @@
+1)crear sys call para cambiar la prioridad y otra para imprimir el estado 
+	syscall.h, defs.h, user.h, proc.c, sysproc.c, usys.S, syscall.c
+	(el que cambia la prioridad va a necesitar el pid y la nueva prioridad)
+	(en proc.c hay que definir el codigo de las syscalls lo podes hacer en otro archivo)
+2)cambiar la estructura de un proc para que acepte la prioridad 
+	proc.h
+
+3) en proc.c setaer la prioridad de inicio de proceso
+4) en exec.c enternder un poco y setear la proiridad 
+5)cambiar el shced en proc.c
+6)cambiar el make
+
+7)hacer algo para starvation
+
+
+La idea es una sola cola y que corra por prioridades, el proceso tiene que estar en runable, me va a garantizar que atienda a todos
