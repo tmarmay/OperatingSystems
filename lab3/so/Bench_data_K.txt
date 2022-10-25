@@ -1,0 +1,756 @@
+Datos de los Benchs:
+
+Quantum por default (A):
+
+Caso A0: 1 iobench solo.
+
+                                        4: 5184 IOP100T
+                                        4: 5248 IOP100T
+                                        4: 5184 IOP100T
+                                        4: 5184 IOP100T
+                                        4: 5248 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5376 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5248 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5248 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5248 IOP100T
+                                        4: 5312 IOP100T
+                                        4: 5248 IOP100T
+
+Caso A1: 1 cpubench solo.
+
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 5863 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 6039 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 5979 KFLOP100T
+10: 6039 KFLOP100T
+10: 6039 KFLOP100T
+
+Caso A2: 1 iobench con 1 cpubench.
+
+21: 6039 KFLOP100T
+                                        19: 908 IOP100T
+21: 5921 KFLOP100T
+21: 5921 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5921 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5921 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5921 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5979 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+21: 5921 KFLOP100T
+21: 5979 KFLOP100T
+                                        19: 33 IOP100T
+
+Caso A3: 1 iobench con 1 iobench.
+                                        5: 5312 IOP100T
+                                        7: 4544 IOP100T
+                                        5: 4879 IOP100T
+                                        7: 5376 IOP100T
+                                        5: 6581 IOP100T
+                                        7: 6208 IOP100T
+                                        7: 4736 IOP100T
+                                        5: 4770 IOP100T
+                                        7: 3776 IOP100T
+                                        5: 3776 IOP100T
+                                        7: 3328 IOP100T
+                                        5: 4752 IOP100T
+                                        7: 6016 IOP100T
+                                        5: 5056 IOP100T
+                                        7: 5661 IOP100T
+                                        5: 4160 IOP100T
+                                        7: 5011 IOP100T
+                                        5: 5259 IOP100T
+                                        5: 6080 IOP100T
+                                        7: 4246 IOP100T
+                                        5: 5504 IOP100T
+                                        7: 5322 IOP100T
+                                        5: 6144 IOP100T
+                                        7: 4416 IOP100T
+                                        5: 5824 IOP100T
+                                        7: 4246 IOP100T
+                                        5: 5888 IOP100T
+                                        7: 4480 IOP100T
+                                        7: 3968 IOP100T
+                                        5: 4036 IOP100T
+                                        7: 6208 IOP100T
+                                        5: 5577 IOP100T
+                                        7: 4544 IOP100T
+                                        5: 4800 IOP100T
+                                        7: 4160 IOP100T
+                                        5: 4815 IOP100T
+                                        7: 4038 IOP100T
+                                        5: 5632 IOP100T
+                                        7: 5376 IOP100T
+                                        5: 3008 IOP100T
+
+Caso A4: 1 cpubench con 1 cpubench.
+14: 2876 KFLOP100T
+12: 2684 KFLOP100T
+14: 2876 KFLOP100T
+12: 2614 KFLOP100T
+14: 2960 KFLOP100T
+12: 2684 KFLOP100T
+14: 3004 KFLOP100T
+12: 2757 KFLOP100T
+14: 5490 KFLOP100T
+12: 7597 KFLOP100T
+14: 8530 KFLOP100T
+12: 8530 KFLOP100T
+14: 8530 KFLOP100T
+12: 8677 KFLOP100T
+14: 8530 KFLOP100T
+12: 8530 KFLOP100T
+14: 8677 KFLOP100T
+12: 8677 KFLOP100T
+14: 8530 KFLOP100T
+12: 8530 KFLOP100T
+14: 8677 KFLOP100T
+12: 8530 KFLOP100T
+14: 8530 KFLOP100T
+12: 8677 KFLOP100T
+14: 8677 KFLOP100T
+12: 8530 KFLOP100T
+14: 8530 KFLOP100T
+12: 8677 KFLOP100T
+
+Quantum 10 veces mas chico (B):
+
+Caso B0: 1 iobench solo.
+                                        4: 5454 IOP1000T
+                                        4: 5440 IOP1000T
+                                        4: 5465 IOP1000T
+                                        4: 5471 IOP1000T
+                                        4: 5471 IOP1000T
+                                        4: 5471 IOP1000T
+                                        4: 5465 IOP1000T
+                                        4: 5471 IOP1000T
+                                        4: 5476 IOP1000T
+                                        4: 5449 IOP1000T
+                                        4: 5449 IOP1000T
+                                        4: 5471 IOP1000T
+                                        4: 5454 IOP1000T
+                                        4: 5454 IOP1000T
+                                        4: 5449 IOP1000T
+                                        4: 5460 IOP1000T
+                                        4: 5454 IOP1000T
+                                        4: 4947 IOP1000T
+                                        4: 5158 IOP1000T
+                                        4: 5333 IOP1000T
+                                        
+Caso B1: 1 cpubench solo.
+7: 6074 KFLOP1000T
+7: 6030 KFLOP1000T
+7: 6035 KFLOP1000T
+7: 6011 KFLOP1000T
+7: 6111 KFLOP1000T
+7: 6111 KFLOP1000T
+7: 6131 KFLOP1000T
+7: 6045 KFLOP1000T
+7: 6121 KFLOP1000T
+7: 6156 KFLOP1000T
+7: 6119 KFLOP1000T
+7: 6039 KFLOP1000T
+7: 6109 KFLOP1000T
+7: 6051 KFLOP1000T
+7: 6144 KFLOP1000T
+7: 6054 KFLOP1000T
+7: 6109 KFLOP1000T
+7: 6110 KFLOP1000T
+7: 6124 KFLOP1000T
+7: 6067 KFLOP1000T
+
+Caso B2: 1 iobench con 1 cpubench.
+                                        10: 3572 IOP1000T
+13: 5179 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5279 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5293 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5309 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5279 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5319 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5319 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5269 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5299 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5319 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5279 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5269 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5289 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5279 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5269 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5299 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5319 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5279 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5269 KFLOP1000T
+                                        10: 329 IOP1000T
+13: 5289 KFLOP1000T
+
+Caso B3: 1 iobench con 1 iobench.
+
+                                        19: 4815 IOP1000T
+                                        21: 4317 IOP1000T
+                                        19: 4245 IOP1000T
+                                        21: 4462 IOP1000T
+                                        19: 4407 IOP1000T
+                                        21: 4047 IOP1000T
+                                        19: 4175 IOP1000T
+                                        21: 4355 IOP1000T
+                                        19: 4019 IOP1000T
+                                        21: 4212 IOP1000T
+                                        19: 4083 IOP1000T
+                                        21: 4453 IOP1000T
+                                        19: 4011 IOP1000T
+                                        21: 4241 IOP1000T
+                                        19: 4544 IOP1000T
+                                        21: 4503 IOP1000T
+                                        19: 4212 IOP1000T
+                                        21: 3904 IOP1000T
+                                        19: 4512 IOP1000T
+                                        21: 4717 IOP1000T
+                                        19: 4453 IOP1000T
+                                        21: 4141 IOP1000T
+                                        19: 4288 IOP1000T
+                                        21: 4161 IOP1000T
+                                        19: 4621 IOP1000T
+                                        21: 4359 IOP1000T
+                                        19: 4539 IOP1000T
+                                        21: 4435 IOP1000T
+                                        19: 4571 IOP1000T
+                                        21: 4471 IOP1000T
+                                        19: 4019 IOP1000T
+
+Caso B4: 1 cpubench con 1 cpubench.
+
+25: 5416 KFLOP1000T
+27: 5954 KFLOP1000T
+25: 8506 KFLOP1000T
+27: 8834 KFLOP1000T
+25: 8450 KFLOP1000T
+27: 8785 KFLOP1000T
+25: 8475 KFLOP1000T
+27: 8817 KFLOP1000T
+25: 8480 KFLOP1000T
+27: 8787 KFLOP1000T
+27: 8670 KFLOP1000T
+25: 8360 KFLOP1000T
+27: 8830 KFLOP1000T
+25: 8517 KFLOP1000T
+27: 8790 KFLOP1000T
+25: 8500 KFLOP1000T
+27: 8707 KFLOP1000T
+25: 8437 KFLOP1000T
+27: 8890 KFLOP1000T
+25: 8540 KFLOP1000T
+27: 8837 KFLOP1000T
+25: 8530 KFLOP1000T
+27: 8730 KFLOP1000T
+25: 8457 KFLOP1000T
+27: 8727 KFLOP1000T
+25: 8447 KFLOP1000T
+27: 8580 KFLOP1000T
+25: 8180 KFLOP1000T
+27: 8547 KFLOP1000T
+25: 8197 KFLOP1000T
+27: 8233 KFLOP1000T
+25: 7943 KFLOP1000T
+27: 8661 KFLOP1000T
+25: 8401 KFLOP1000T
+27: 8781 KFLOP1000T
+25: 8451 KFLOP1000T
+27: 8673 KFLOP1000T
+25: 8384 KFLOP1000T
+27: 8782 KFLOP1000T
+25: 8455 KFLOP1000T13
+
+Quantum 100 veces mas chico (C):
+
+Caso C0: 1 iobench solo.
+
+                                        18: 4700 IOP10000T
+                                        18: 4690 IOP10000T
+                                        18: 4712 IOP10000T
+                                        18: 4701 IOP10000T
+                                        18: 4691 IOP10000T
+                                        18: 4705 IOP10000T
+                                        18: 4695 IOP10000T
+                                        18: 4653 IOP10000T
+                                        18: 4590 IOP10000T
+                                        18: 4706 IOP10000T
+                                        18: 4723 IOP10000T
+                                        18: 4720 IOP10000T
+                                        18: 4730 IOP10000T
+                                        18: 4731 IOP10000T
+                                        18: 4721 IOP10000T
+                                        18: 4704 IOP10000T
+                                        18: 4685 IOP10000T
+                                        18: 4680 IOP10000T
+                                        18: 4706 IOP10000T
+                                        18: 4693 IOP10000T
+                                        18: 4718 IOP10000T
+                                        18: 4714 IOP10000T
+
+Caso C1: 1 cpubench solo.
+
+4: 5275 KFLOP10000T
+4: 5282 KFLOP10000T
+4: 5299 KFLOP10000T
+4: 5264 KFLOP10000T
+4: 5290 KFLOP10000T
+4: 5247 KFLOP10000T
+4: 5243 KFLOP10000T
+4: 5259 KFLOP10000T
+4: 5254 KFLOP10000T
+4: 5252 KFLOP10000T
+4: 5264 KFLOP10000T
+4: 5268 KFLOP10000T
+4: 5238 KFLOP10000T
+4: 5253 KFLOP10000T
+4: 5250 KFLOP10000T
+4: 5241 KFLOP10000T
+4: 5251 KFLOP10000T
+4: 5261 KFLOP10000T
+4: 5267 KFLOP10000T
+4: 5260 KFLOP10000T
+4: 14961 KFLOP10000T
+4: 14969 KFLOP10000T
+4: 15034 KFLOP10000T
+4: 15096 KFLOP10000T
+4: 14829 KFLOP10000T
+4: 14812 KFLOP10000T
+4: 14734 KFLOP10000T
+
+Caso C2: 1 iobench con 1 cpubench.
+
+                                        4: 2740 IOP10000T
+6: 2234 KFLOP10000T
+                                        4: 2774 IOP10000T
+
+                                        4: 2722 IOP10000T
+6: 2214 KFLOP10000T
+                                        4: 2757 IOP10000T
+6: 2196 KFLOP10000T
+                                        4: 2762 IOP10000T
+                                        4: 2770 IOP10000T
+6: 2187 KFLOP10000T
+                                        4: 2771 IOP10000T
+                                        4: 2797 IOP10000T
+6: 2173 KFLOP10000T
+                                        4: 2754 IOP10000T
+                                        4: 2759 IOP10000T
+6: 2174 KFLOP10000T
+                                        4: 2772 IOP10000T
+                                        4: 2767 IOP10000T
+6: 2180 KFLOP10000T
+                                        4: 2596 IOP10000T
+6: 2102 KFLOP10000T
+                                        4: 2441 IOP10000T
+                                        4: 2232 IOP10000T
+6: 2134 KFLOP10000T
+                                        4: 2622 IOP10000T
+                                        4: 2733 IOP10000T
+6: 2215 KFLOP10000T
+                                        4: 2701 IOP10000T
+                                        4: 2708 IOP10000T
+6: 2209 KFLOP10000T
+                                        4: 2737 IOP10000T
+                                        4: 2761 IOP10000T
+6: 2181 KFLOP10000T
+                                        4: 2732 IOP10000T
+                                        4: 2774 IOP10000T
+6: 2134 KFLOP10000T
+                                        4: 2791 IOP10000T
+                                        4: 2729 IOP10000T
+6: 2123 KFLOP10000T
+                                        4: 2664 IOP10000T
+6: 2102 KFLOP10000T
+                                        4: 2774 IOP10000T
+                                        4: 2789 IOP10000T
+6: 2126 KFLOP10000T
+                                        4: 2760 IOP10000T
+                                        4: 2722 IOP10000T
+6: 2112 KFLOP10000T
+                                        4: 2653 IOP10000T
+                                        4: 2493 IOP10000T
+6: 2136 KFLOP10000T
+                                        4: 2708 IOP10000T
+                                        4: 2620 IOP10000T
+
+Caso C3: 1 iobench con 1 iobench.
+
+                                        18: 4610 IOP10000T
+                                        22: 5374 IOP10000T
+                                        18: 5465 IOP10000T
+                                        22: 5429 IOP10000T
+                                        18: 5486 IOP10000T
+                                        22: 5373 IOP10000T
+                                        18: 5308 IOP10000T
+                                        22: 5473 IOP10000T
+                                        18: 5427 IOP10000T
+                                        22: 5238 IOP10000T
+                                        18: 5153 IOP10000T
+                                        22: 5309 IOP10000T
+                                        18: 5483 IOP10000T
+                                        22: 5529 IOP10000T
+                                        18: 5429 IOP10000T
+                                        22: 5288 IOP10000T
+                                        18: 5271 IOP10000T
+                                        22: 5343 IOP10000T
+                                        18: 5434 IOP10000T
+                                        22: 5335 IOP10000T
+                                        18: 5205 IOP10000T
+                                        22: 5235 IOP10000T
+                                        18: 5230 IOP10000T
+                                        22: 5222 IOP10000T
+                                        18: 5153 IOP10000T
+                                        22: 5241 IOP10000T
+                                        18: 5289 IOP10000T
+
+Caso C4: 1 cpubench con 1 cpubench.
+
+4: 3993 KFLOP10000T
+6: 5040 KFLOP10000T
+4: 7463 KFLOP10000T
+6: 7875 KFLOP10000T
+4: 7494 KFLOP10000T
+6: 7879 KFLOP10000T
+4: 7437 KFLOP10000T
+6: 7943 KFLOP10000T
+4: 7453 KFLOP10000T
+6: 7946 KFLOP10000T
+4: 7393 KFLOP10000T
+6: 7909 KFLOP10000T
+4: 7431 KFLOP10000T
+6: 7870 KFLOP10000T
+4: 7460 KFLOP10000T
+6: 7873 KFLOP10000T
+4: 7438 KFLOP10000T
+6: 7929 KFLOP10000T
+6: 7892 KFLOP10000T
+4: 7429 KFLOP10000T
+6: 7916 KFLOP10000T
+4: 7459 KFLOP10000T
+6: 7915 KFLOP10000T
+4: 7481 KFLOP10000T
+6: 7835 KFLOP10000T
+4: 7388 KFLOP10000T
+6: 7979 KFLOP10000T
+4: 7451 KFLOP10000T
+6: 7838 KFLOP10000T
+4: 7371 KFLOP10000T
+6: 7842 KFLOP10000T
+4: 7419 KFLOP10000T
+6: 7873 KFLOP10000T
+4: 7449 KFLOP10000T
+6: 7878 KFLOP10000T
+4: 7398 KFLOP10000T
+6: 7910 KFLOP10000T
+4: 7396 KFLOP10000T
+6: 7733 KFLOP10000T
+
+
+Quantum 1000 veces mas chico (D):
+
+Aca tuve que usar 10K Ticks en vez de 100K Ticks porque sino los benchs no corrian.
+Entonces los valores deberian ser 1/10 del valor mostrado para poder compararlos con los otros valores.
+
+Caso D0: 1 iobench solo.
+
+                                        6: 1586 IOP10000T
+                                        6: 1580 IOP10000T
+                                        6: 1595 IOP10000T
+                                        6: 1617 IOP10000T
+                                        6: 1617 IOP10000T
+                                        6: 1621 IOP10000T
+                                        6: 1609 IOP10000T
+                                        6: 1607 IOP10000T
+                                        6: 1622 IOP10000T
+                                        6: 1611 IOP10000T
+                                        6: 1597 IOP10000T
+                                        6: 1589 IOP10000T
+                                        6: 1635 IOP10000T
+                                        6: 1639 IOP10000T
+                                        6: 1586 IOP10000T
+                                        6: 1605 IOP10000T
+                                        6: 1583 IOP10000T
+                                        6: 1581 IOP10000T
+                                        6: 1568 IOP10000T
+                                        6: 1612 IOP10000T
+                                        6: 1618 IOP10000T
+                                        6: 1627 IOP10000T
+                                        6: 1578 IOP10000T
+                                        6: 1625 IOP10000T
+                                        6: 1594 IOP10000T
+                                        6: 1605 IOP10000T
+                                        6: 1618 IOP10000T
+                                        6: 1585 IOP10000T
+                                        6: 1580 IOP10000T
+
+Caso D1: 1 cpubench solo.
+
+ 11: 765 KFLOP10000T
+11: 2491 KFLOP10000T
+11: 2444 KFLOP10000T
+11: 2363 KFLOP10000T
+11: 2445 KFLOP10000T
+11: 2508 KFLOP10000T
+11: 2482 KFLOP10000T
+11: 2506 KFLOP10000T
+11: 2508 KFLOP10000T
+11: 2478 KFLOP10000T
+11: 2482 KFLOP10000T
+11: 2492 KFLOP10000T
+11: 2480 KFLOP10000T
+11: 2512 KFLOP10000T
+11: 2451 KFLOP10000T
+11: 2397 KFLOP10000T
+11: 2400 KFLOP10000T
+11: 2397 KFLOP10000T
+11: 2369 KFLOP10000T
+11: 2391 KFLOP10000T
+11: 2396 KFLOP10000T
+11: 2399 KFLOP10000T
+11: 2413 KFLOP10000T
+11: 2408 KFLOP10000T
+11: 2430 KFLOP10000T
+11: 2447 KFLOP10000T
+11: 2378 KFLOP10000T
+11: 2416 KFLOP10000T
+11: 2389 KFLOP10000T
+11: 2449 KFLOP10000T
+11: 2440 KFLOP10000T
+11: 2457 KFLOP10000T
+11: 2468 KFLOP10000T
+11: 2451 KFLOP10000T
+11: 2455 KFLOP10000T
+11: 2455 KFLOP10000T
+11: 2448 KFLOP10000T
+11: 2448 KFLOP10000T
+11: 2452 KFLOP10000T
+11: 2479 KFLOP10000T
+11: 2452 KFLOP10000T
+11: 2454 KFLOP10000T
+11: 2453 KFLOP10000T
+11: 2446 KFLOP10000T
+
+Caso D2: 1 iobench con 1 cpubench.
+
+                                       6: 1587 IOP10000T
+                                        6: 996 IOP10000T
+                                        6: 1005 IOP10000T
+11: 707 KFLOP10000T
+                                        6: 1004 IOP10000T
+                                        6: 1014 IOP10000T
+                                        6: 995 IOP10000T
+11: 742 KFLOP10000T
+                                        6: 992 IOP10000T
+                                        6: 1011 IOP10000T
+                                        6: 998 IOP10000T
+11: 722 KFLOP10000T
+                                        6: 991 IOP10000T
+                                        6: 1011 IOP10000T
+11: 715 KFLOP10000T
+                                        6: 1010 IOP10000T
+                                        6: 997 IOP10000T
+                                        6: 992 IOP10000T
+11: 705 KFLOP10000T
+                                        6: 996 IOP10000T
+                                        6: 986 IOP10000T
+                                        6: 994 IOP10000T
+11: 702 KFLOP10000T
+                                        6: 999 IOP10000T
+                                        6: 996 IOP10000T
+                                        6: 997 IOP10000T
+11: 705 KFLOP10000T
+                                        6: 1005 IOP10000T
+                                        6: 998 IOP10000T
+                                        6: 992 IOP10000T
+11: 707 KFLOP10000T
+                                        6: 997 IOP10000T
+                                        6: 996 IOP10000T
+11: 713 KFLOP10000T
+                                        6: 994 IOP10000T
+
+Caso D3: 1 iobench con 1 iobench.
+
+ 6: 1682 IOP10000T
+                                        8: 1942 IOP10000T
+                                        6: 1920 IOP10000T
+                                        8: 1974 IOP10000T
+                                        6: 1943 IOP10000T
+                                        8: 1888 IOP10000T
+                                        6: 1902 IOP10000T
+                                        8: 1979 IOP10000T
+                                        6: 2003 IOP10000T
+                                        8: 1954 IOP10000T
+                                        6: 1980 IOP10000T
+                                        8: 2057 IOP10000T
+                                        6: 2044 IOP10000T
+                                        8: 1908 IOP10000T
+                                        6: 1929 IOP10000T
+                                        8: 1981 IOP10000T
+                                        6: 1923 IOP10000T
+                                        8: 1885 IOP10000T
+                                        6: 1907 IOP10000T
+                                        8: 1948 IOP10000T
+                                        6: 1933 IOP10000T
+                                        8: 1880 IOP10000T
+                                        6: 1870 IOP10000T
+                                        8: 1953 IOP10000T
+                                        6: 1997 IOP10000T
+                                        8: 1959 IOP10000T
+                                        6: 2001 IOP10000T
+                                        8: 2092 IOP10000T
+                                        6: 1929 IOP10000T
+                                        8: 1901 IOP10000T
+                                        6: 1946 IOP10000T
+                                        8: 1946 IOP10000T
+                                        6: 1907 IOP10000T
+                                        8: 1843 IOP10000T
+                                        6: 1883 IOP10000T
+                                        8: 1932 IOP10000T
+                                        6: 1898 IOP10000T
+                                        8: 1837 IOP10000T
+                                        6: 1851 IOP10000T
+                                        8: 1869 IOP10000T
+                                        6: 1868 IOP10000T
+                                        8: 1887 IOP10000T
+                                        6: 1911 IOP10000T
+                                        8: 1955 IOP10000T
+                                        6: 1958 IOP10000T
+
+Caso D4: 1 cpubench con 1 cpubench.
+
+11: 1405 KFLOP10000T
+14: 1233 KFLOP10000T
+11: 1380 KFLOP10000T
+14: 1250 KFLOP10000T
+11: 1399 KFLOP10000T
+14: 1264 KFLOP10000T
+11: 1391 KFLOP10000T
+14: 1259 KFLOP10000T
+11: 1392 KFLOP10000T
+14: 1257 KFLOP10000T
+11: 1400 KFLOP10000T
+14: 1256 KFLOP10000T
+11: 1384 KFLOP10000T
+14: 1256 KFLOP10000T
+11: 1394 KFLOP10000T
+14: 1259 KFLOP10000T
+11: 1399 KFLOP10000T
+11: 1394 KFLOP10000T
+14: 1251 KFLOP10000T
+11: 1450 KFLOP10000T
+14: 1272 KFLOP10000T
+11: 1421 KFLOP10000T
+14: 1275 KFLOP10000T
+11: 1395 KFLOP10000T
+14: 1267 KFLOP10000T
+11: 1428 KFLOP10000T
+14: 1281 KFLOP10000T
+11: 1383 KFLOP10000T
+14: 1253 KFLOP10000T
+11: 1394 KFLOP10000T
+14: 1515 KFLOP10000T
+11: 2846 KFLOP10000T
+14: 3436 KFLOP10000T
+11: 3798 KFLOP10000T
+14: 3475 KFLOP10000T
+11: 3905 KFLOP10000T
+14: 3384 KFLOP10000T
+11: 3775 KFLOP10000T
+14: 3569 KFLOP10000T
+11: 4022 KFLOP10000T
+14: 3346 KFLOP10000T
+11: 3707 KFLOP10000T
+11: 3916 KFLOP10000T
+14: 3513 KFLOP10000T
+11: 4006 KFLOP10000T
+14: 3600 KFLOP10000T
+11: 3852 KFLOP10000T
+14: 3482 KFLOP10000T
+14: 3615 KFLOP10000T
+11: 4003 KFLOP10000T
+11: 3974 KFLOP10000T
+14: 3548 KFLOP10000T
+11: 3935 KFLOP10000T
+14: 3548 KFLOP10000T
+14: 3649 KFLOP10000T
+11: 4046 KFLOP10000T
+14: 3610 KFLOP10000T
+11: 4024 KFLOP10000T
+14: 3511 KFLOP10000T
+11: 3891 KFLOP10000T
+11: 3901 KFLOP10000T
+14: 3478 KFLOP10000T
+11: 3858 KFLOP10000T
+14: 3442 KFLOP10000T
+11: 3964 KFLOP10000T
+14: 3560 KFLOP10000T
+11: 3969 KFLOP10000T
+14: 3584 KFLOP10000T
+11: 3972 KFLOP10000T
+14: 3565 KFLOP10000T
+11: 3963 KFLOP10000T
+14: 3545 KFLOP10000T
+11: 3978 KFLOP10000T
+14: 3506 KFLOP10000T
+11: 3891 KFLOP10000T
+14: 3473 KFLOP10000T
+11: 3882 KFLOP10000T

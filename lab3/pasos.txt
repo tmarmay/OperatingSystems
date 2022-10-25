@@ -14,3 +14,19 @@
 
 
 La idea es una sola cola y que corra por prioridades, el proceso tiene que estar en runable, me va a garantizar que atienda a todos
+
+
+
+PREGUNTAR PORQUE EL UP ANDA SIN EL ACQUIERE --> porque ya estaba dentro de un acquiere
+Pasos:
+-defini NPRIO en param.h
+-agrego campos en proc.h 
+-inicializo los valores en proc.c {userinit}(definimos que 0 es la mejor prioridad y NPRIO-1 la peor) 
+	tambien para cuando liberamos un porceso y fork en proc.c {freeproc, fork}
+-creo dos syscalls para actualizar la prioridad y la cantidad de veces que fue elegido en proc.c {syscall.c syscall.h defs.h, usys.pl, sysproc.c}
+	(las hicimos syscalls y no funciones staticas para poder usar comandos como los de ubnutu para subirle/bajarle la prioridad a un proceso en especifico)
+-edito el print de proceso en proc.c
+-añadimos en yield y sleep las funciones correspondientes
+
+-definimnos los segmentos en param.h
+-añadimos una lista para saber el indice del proceso que se corre

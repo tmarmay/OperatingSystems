@@ -18,9 +18,6 @@ https://github.com/marf/xv6-scheduling/blob/master/README.md
 osted:
 https://pages.cs.wisc.edu/~kzhao32/projects/cs537p2b_xv6Scheduler.pdf
 
-diferentes scheduling en xv6:
-https://github.com/marf/xv6-scheduling/blob/master/README.md
-
 idea general de funcionamiento de xv6:
 https://www.youtube.com/watch?v=fEnWqibCwo0&ab_channel=MythiliVutukuru
 
