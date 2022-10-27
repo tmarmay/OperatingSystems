@@ -8,14 +8,14 @@
 
 struct proc_list{ 
   int used_size;                   
-  int used_list[NPROC/NPRIO]; // 21 lugares, pierdo uno
+  struct proc *used_list[NPROC/NPRIO]; // 21 lugares, pierdo uno
   int begin;              
 };
 
 void init_queue(struct proc_list *l);
 
-void enqueue(struct proc_list *l, int index);
+void enqueue(struct proc_list *l,struct proc *p);
 
-int dequeue(struct proc_list *l);
+struct proc *dequeue(struct proc_list *l);
 
 #endif

@@ -154,8 +154,6 @@ found:
   
   p->priority = 0;
   p->scheduler_chossen = 0;
-
-  p->offset = init_offset;
   
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
@@ -264,7 +262,7 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
-  enqueue(&levels_mlfq[0],p->offset);
+  enqueue(&levels_mlfq[0],p);
 
   release(&p->lock);
 }
@@ -335,7 +333,8 @@ fork(void)
 
   acquire(&np->lock);
   np->state = RUNNABLE;
-  enqueue(&levels_mlfq[0],p->offset);
+  np->priority = p->priority;
+  enqueue(&levels_mlfq[np->priority],np);
   release(&np->lock);
 
   return pid;
@@ -468,15 +467,12 @@ scheduler(void)
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
     for (int i = 0; i < NPRIO; i++){    
-      printf("%d\n",levels_mlfq[0].used_size);
-      printf("%d\n",levels_mlfq[1].used_size);
-      printf("%d\n",levels_mlfq[2].used_size);
 
-      if(levels_mlfq[i].used_size > 0 && p->state == RUNNABLE) {
-        printf("entro\n");
-        p = proc + p->offset;
+      if(levels_mlfq[i].used_size > 0) {
+        p = dequeue(&levels_mlfq[i]);
         
-        dequeue(&levels_mlfq[i]);
+        acquire(&p->lock);
+      
         // Switch to chosen process.  It is the process's job
         // to release its lock and then reacquire it
         // before jumping back to us.
@@ -487,13 +483,8 @@ scheduler(void)
         // Process is done running for now.
         // It should have changed its p->state before coming back.
         c->proc = 0;
+        release(&p->lock);
       }
-      else if(levels_mlfq[i].used_size > 0 && p->state == SLEEPING){
-        int j = dequeue(&levels_mlfq[i]);
-        enqueue(&levels_mlfq[i],j);
-      }
-      release(&p->lock);
-      printf("salgo\n");
     }
   }
 }
@@ -535,7 +526,7 @@ yield(void)
   if (p->priority < 2){
     p->priority++;
   }
-  enqueue(&levels_mlfq[p->priority],p->offset);
+  enqueue(&levels_mlfq[p->priority],p);
 
   sched();
   release(&p->lock);
@@ -586,7 +577,6 @@ sleep(void *chan, struct spinlock *lk)
   if (p->priority > 0){
     p->priority--;
   }
-  enqueue(&levels_mlfq[p->priority],p->offset);
   
   sched();
 
@@ -610,7 +600,7 @@ wakeup(void *chan)
       acquire(&p->lock);
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
-        //enqueue(&levels_mlfq[p->priority],p->offset);
+        enqueue(&levels_mlfq[p->priority],p);
       }
       release(&p->lock);
     }
@@ -632,7 +622,7 @@ kill(int pid)
       if(p->state == SLEEPING){
         // Wake process from sleep().
         p->state = RUNNABLE;
-        enqueue(&levels_mlfq[p->priority],p->offset);
+        enqueue(&levels_mlfq[p->priority],p);
       }
       release(&p->lock);
       return 0;
