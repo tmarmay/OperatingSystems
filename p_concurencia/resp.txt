@@ -1,0 +1,45 @@
+CADA LINEA SEA ATOMICA
+lost update: cuando dos caches tienen diferentes valores de una misma variable 
+el valor final de un multiprograma es cuando se termina de ejecutar todos los hilos/proceso
+update disjuntos,load disjuntos y store disjuntos 
+ejercicio 1:
+a)1,2,3,4
+	(ver cuantas veces hay una suma y decir que no se puede pasar de eso ej: 0<valores posibles<5)
+b)falta
+c)8!/(3!2!3!)
+	 8! : de los factoriales de c/u
+	 3! : no puedo cambiar ell orden de p0 ...etc
+
+ejercicio 2:
+a)nunca termina
+b)0,1,2
+
+ejercicio 3:
+falta
+
+ejercicio 4:
+m y n son globales x
+a)el doble mas 1
+b)7(potencias de dos) y 100(siempre en p1)
+dividir en casos --> generalizar
+c)100<= valores posibles <= 200
+
+ejercicio 5:
+falta
+
+ejercicio 6:
+falta
+
+ejercicio 7: 
+hacer  con zulip
+
+ejercicio 8:
+algoritmos de petterson
+(c0,t) quiero correr y el turno es del otro
+las 4 algoritmos son convertir la doble asignacion en simples y las 4 posibles convinaciones 
+
+
+falta ejercicios
+
+SEMAFOROS
+ejercicio 10:
