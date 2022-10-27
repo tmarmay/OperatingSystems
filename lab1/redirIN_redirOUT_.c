@@ -14,7 +14,7 @@
 /*
 int main(void){
 
-	char direc[] = "hola.txt";
+	char direc[] = "prueba_redir.txt";
 	int op = open(direc,O_WRONLY);
 	dup2(op,STDOUT_FILENO);
 	close(op);
@@ -26,12 +26,12 @@ int main(void){
 // redireccion de entrada (<)
 int main(void){
 
-        char direc[] = "hola.txt";
+        char direc[] = "prueba_redir.txt";
         int op = open(direc,O_RDONLY);
         dup2(op,STDIN_FILENO);
 	//printf("Programa finalizado");
 	close(op);
-        execlp("/bin/grep","grep","ls",NULL);
+        execlp("/usr/bin/wc","wc",NULL);
 	return 0;
 }
 
