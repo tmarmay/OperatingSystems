@@ -11,7 +11,4 @@
 #define NBUF         (MAXOPBLOCKS*3)  // size of disk block cache
 #define FSSIZE       2000  // size of file system in blocks
 #define MAXPATH      128   // maximum file path name
-
-//MLFQ implementation
-#define NPRIO 3 // maximum number of levels for MLFQ
-
+#define NPRIO        3     // mlfq levels

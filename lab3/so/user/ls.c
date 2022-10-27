@@ -3,7 +3,6 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 
-
 char*
 fmtname(char *path)
 {
@@ -85,5 +84,3 @@ main(int argc, char *argv[])
     ls(argv[i]);
   exit(0);
 }
-
-

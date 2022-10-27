@@ -20,7 +20,3 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-    //MLFQ implementation
-#define SYS_upriority  22 
-#define SYS_dwpriority  23
-#define SYS_uproc_chossen  24

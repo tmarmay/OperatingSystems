@@ -92,9 +92,6 @@ struct proc {
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
 
-  int priority;                // Priority (MLFQ)
-  int proc_chosen;             // How many times the scheduler choose the process
-  
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 
@@ -107,5 +104,8 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
-};
 
+  int priority;
+  int scheduler_chossen;
+  int offset;
+};

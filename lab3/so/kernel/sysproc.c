@@ -6,29 +6,6 @@
 #include "spinlock.h"
 #include "proc.h"
 
-
-//MLFQ implementation
-uint64
-sys_upriority(void)
-{
-  struct proc *p = myproc();
-  return upriority(p);
-}
-
-uint64
-sys_dwpriority(void)
-{
-  struct proc *p = myproc();
-  return dwpriority(p);
-}
-
-uint64
-sys_uproc_chossen(void)
-{
-  struct proc *p = myproc();
-  return uproc_chossen(p);
-}
-
 uint64
 sys_exit(void)
 {

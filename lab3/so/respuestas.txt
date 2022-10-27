@@ -1,3 +1,0 @@
-ej1) XV6 usa un cheduler del tipo rubber robbin
-ej2) 
-	a) 

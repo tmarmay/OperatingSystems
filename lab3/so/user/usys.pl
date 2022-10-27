@@ -36,9 +36,3 @@ entry("getpid");
 entry("sbrk");
 entry("sleep");
 entry("uptime");
-entry("upriority");
-entry("dwpriority");
-entry("uproc_chossen");
-
-
-

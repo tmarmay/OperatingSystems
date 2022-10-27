@@ -4,7 +4,7 @@ U=user
 OBJS = \
   $K/entry.o \
   $K/start.o \
-  $K/mlfq_implementation.o \
+  $K/mlfq_imp.o \
   $K/console.o \
   $K/printf.o \
   $K/uart.o \
@@ -118,8 +118,6 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 
 UPROGS=\
 	$U/_cat\
-	$U/_iobench\
-	$U/_cpubench\
 	$U/_echo\
 	$U/_forktest\
 	$U/_grep\
