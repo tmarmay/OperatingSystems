@@ -3,6 +3,7 @@ lost update: cuando dos caches tienen diferentes valores de una misma variable
 el valor final de un multiprograma es cuando se termina de ejecutar todos los hilos/proceso
 update disjuntos,load disjuntos y store disjuntos 
 lock: no cumple la teoria de sincronizacion (sincronisation complete) pero semaforos si 
+EVENTUALMENTE TODOS LOS HILOS DE UN MULTIPROCESO AVANZA
 ejercicio 1:
 a)1,2,3,4
 	(ver cuantas veces hay una suma y decir que no se puede pasar de eso ej: 0<valores posibles<5)
@@ -44,4 +45,28 @@ falta ejercicios
 
 SEMAFOROS
 ejercicio 10:
-no existe semaforos con numeros negativos 
+no existe semaforos con numeros negativos
+
+ejercicio 11:
+calve esta en p0 segunda linea, con un solo sem sale.
+a)	a problemas simetros soluciones simetricas
+	si hay mayor grado de concurrencia es mejor porque aprovechas mejor los cores porque al tener menor grado,perdes tiempo en los scheduling no validos
+b)productor consumidor(cruzados)
+
+ejercicio 12:
+(0,0) deadlock // mal inizicliazacion de procudtor consumidor con deadlock
+(0,1) pong ping
+(1,0) ping pong 
+(1,1) cualquier cosa //mal iniczialicacion de productor consumidor con final caos
+
+ejercicio 13:
+semaforo implemantado con variables de condicion
+variables de condiciones son igual de expresivas que semaforos
+porque con una podes hacer lo que hace la otra. o implementar una con la otra
+
+ejercicio 14:
+p1 estan al revez
+
+ejercicio 15:
+
+
