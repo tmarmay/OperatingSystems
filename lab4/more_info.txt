@@ -1,5 +1,5 @@
 fuse_file_info:
 	https://libfuse.github.io/doxygen/structfuse__file__info.html
 	https://libfuse.github.io/doxygen/fuse-3_810_84_2include_2fuse__common_8h_source.html
-
+	https://pubs.opengroup.org/onlinepubs/009695399/functions/mknod.html
 umount mnt && rm -r ./mnt && make clean && make && mkdir mnt && ./fat-fuse resources/fatfs.img ./mnt/
