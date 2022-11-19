@@ -33,9 +33,9 @@ void enqueue(struct proc_list *l,struct proc *p){
 		l->used_list[pos] = p;
 		l->used_size++;
 	}
-	else{
-		panic("Full proc table");
-	}
+	// else{
+	// 	panic("Full proc table");
+	// }
 }
 
 
@@ -46,7 +46,7 @@ struct proc *dequeue(struct proc_list *l){
 		l->begin = (l->begin + 1) & (NPROC/NPRIO);
 		l->used_size--;
 		return p;
-	}
+	}	
 	else{
 		panic("Empty proc table");
 	}

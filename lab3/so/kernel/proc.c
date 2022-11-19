@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "defs.h"
 #include "mlfq_imp.h"
+#include <stdbool.h>
 
 struct cpu cpus[NCPU];
 
@@ -59,9 +60,6 @@ procinit(void)
       p->state = UNUSED;
       p->kstack = KSTACK((int) (p - proc));
   }
-  init_queue(&levels_mlfq[0]);
-  init_queue(&levels_mlfq[1]);
-  init_queue(&levels_mlfq[2]);
 }
 
 // Must be called with interrupts disabled,
@@ -116,16 +114,13 @@ static struct proc*
 allocproc(void)
 {
   struct proc *p;
-  int init_offset = 0;
   for(p = proc; p < &proc[NPROC]; p++) {
     acquire(&p->lock);
     if(p->state == UNUSED) {
-      init_offset++;
       goto found;
     } else {
       release(&p->lock);
     }
-    init_offset++;
   }
   return 0;
 
@@ -152,8 +147,8 @@ found:
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
   
-  p->priority = 0;
-  p->scheduler_chossen = 0;
+  p->priority = HIGH_PRIO;
+  p->scheduler_chossen = PROC_CHOSEEN;
   
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
@@ -261,9 +256,13 @@ userinit(void)
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
-  p->state = RUNNABLE;
-  enqueue(&levels_mlfq[0],p);
+  init_queue(&levels_mlfq[HIGH_PRIO]);
+  init_queue(&levels_mlfq[MID_PRIO]);
+  init_queue(&levels_mlfq[LOW_PRIO]);
 
+  enqueue(&levels_mlfq[HIGH_PRIO],p);
+  p->state = RUNNABLE;
+  
   release(&p->lock);
 }
 
@@ -332,9 +331,9 @@ fork(void)
   release(&wait_lock);
 
   acquire(&np->lock);
+  enqueue(&levels_mlfq[HIGH_PRIO],np);
+  np->priority = HIGH_PRIO;
   np->state = RUNNABLE;
-  np->priority = p->priority;
-  enqueue(&levels_mlfq[np->priority],np);
   release(&np->lock);
 
   return pid;
@@ -361,43 +360,46 @@ reparent(struct proc *p)
 void
 exit(int status)
 {
-  struct proc *p = myproc();
+	struct proc *p = myproc();
 
-  if(p == initproc)
-    panic("init exiting");
+	if (p == initproc)
+		panic("init exiting");
 
-  // Close all open files.
-  for(int fd = 0; fd < NOFILE; fd++){
-    if(p->ofile[fd]){
-      struct file *f = p->ofile[fd];
-      fileclose(f);
-      p->ofile[fd] = 0;
-    }
-  }
+	// Close all open files.
+	for (int fd = 0; fd < NOFILE; fd++)
+	{
+		if (p->ofile[fd])
+		{
+			struct file *f = p->ofile[fd];
 
-  begin_op();
-  iput(p->cwd);
-  end_op();
-  p->cwd = 0;
+			fileclose(f);
+			p->ofile[fd] = 0;
+		}
+	}
 
-  acquire(&wait_lock);
+	begin_op();
+	iput(p->cwd);
+	end_op();
+	p->cwd = 0;
 
-  // Give any children to init.
-  reparent(p);
+	acquire(&wait_lock);
 
-  // Parent might be sleeping in wait().
-  wakeup(p->parent);
-  
-  acquire(&p->lock);
+	// Give any children to init.
+	reparent(p);
 
-  p->xstate = status;
-  p->state = ZOMBIE;
+	// Parent might be sleeping in wait().
+	wakeup(p->parent);
 
-  release(&wait_lock);
+	acquire(&p->lock);
 
-  // Jump into the scheduler, never to return.
-  sched();
-  panic("zombie exit");
+	p->xstate = status;
+	p->state = ZOMBIE;
+
+	release(&wait_lock);
+
+	// Jump into the scheduler, never to return.
+	sched();
+	panic("zombie exit");
 }
 
 // Wait for a child process to exit and return its pid.
@@ -456,35 +458,36 @@ wait(uint64 addr)
 //  - swtch to start running that process.
 //  - eventually that process transfers control
 //    via swtch back to the scheduler.
+
 void
 scheduler(void)
 {
-  struct proc *p = 0;
+  struct proc *p;
   struct cpu *c = mycpu();
-  
   c->proc = 0;
+
   for(;;){
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
-    for (int i = 0; i < NPRIO; i++){    
+    bool proc_found = false;
+  
+    for (int i = 0; i< NPRIO; i++){
+      if (levels_mlfq[i].used_size > 0) {
+          p = dequeue(&levels_mlfq[i]);
+          acquire(&p->lock);
+          proc_found = true;
+          break;
+      }     
+    }
+    
+    if (proc_found){
+      p->state = RUNNING;
+      p->scheduler_chossen++;
+      c->proc = p;
+      swtch(&c->context, &p->context);
 
-      if(levels_mlfq[i].used_size > 0) {
-        p = dequeue(&levels_mlfq[i]);
-        
-        acquire(&p->lock);
-      
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
-
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-        release(&p->lock);
-      }
+      c->proc = 0;
+      release(&p->lock);     
     }
   }
 }
@@ -495,24 +498,24 @@ scheduler(void)
 // be proc->intena and proc->noff, but that would
 // break in the few places where a lock is held but
 // there's no process.
-void
+void 
 sched(void)
 {
-  int intena;
-  struct proc *p = myproc();
+	int intena;
+	struct proc *p = myproc();
 
-  if(!holding(&p->lock))
-    panic("sched p->lock");
-  if(mycpu()->noff != 1)
-    panic("sched locks");
-  if(p->state == RUNNING)
-    panic("sched running");
-  if(intr_get())
-    panic("sched interruptible");
+	if (!holding(&p->lock))
+		panic("sched p->lock");
+	if (mycpu()->noff != 1)
+		panic("sched locks");
+	if (p->state == RUNNING)
+		panic("sched running");
+	if (intr_get())
+		panic("sched interruptible");
 
-  intena = mycpu()->intena;
-  swtch(&p->context, &mycpu()->context);
-  mycpu()->intena = intena;
+	intena = mycpu()->intena;
+	swtch(&p->context, &mycpu()->context);
+	mycpu()->intena = intena;
 }
 
 // Give up the CPU for one scheduling round.
@@ -523,7 +526,7 @@ yield(void)
   acquire(&p->lock);
   p->state = RUNNABLE;
   
-  if (p->priority < 2){
+  if (p->priority < LOW_PRIO){
     p->priority++;
   }
   enqueue(&levels_mlfq[p->priority],p);
@@ -574,7 +577,7 @@ sleep(void *chan, struct spinlock *lk)
   p->chan = chan;
   p->state = SLEEPING;
 
-  if (p->priority > 0){
+  if (p->priority > HIGH_PRIO){
     p->priority--;
   }
   
@@ -706,7 +709,7 @@ procdump(void)
       state = states[p->state];
     else
       state = "???";
-    printf("%d %s %s %d %d | %d %d %d", p->pid, state, p->name, p->priority, p->scheduler_chossen, levels_mlfq[0].used_size,levels_mlfq[1].used_size,levels_mlfq[2].used_size);
+    printf("%d %s %s %d %d ", p->pid, state, p->name, p->priority, p->scheduler_chossen);
     printf("\n");
   }
 }
