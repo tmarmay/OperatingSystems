@@ -28,30 +28,34 @@
 #include <stdlib.h>
 
 // Function to compare two h_node_tree->data in the tree
-typedef int (*data_cmp_fn)(const void *d1, const void *d2);
-typedef void (*data_modify_fn)(void *d1);
+typedef int (*data_cmp_fn)(const void* d1, const void* d2);
+typedef void (*data_modify_fn)(void* d1);
 
-typedef struct h_tree_s *h_tree;
+typedef struct h_tree_s* h_tree;
 
 /* Destroys every node in @tree, and applies @data_destroy function to the
  * data field.
  */
-void h_tree_destroy(h_tree tree, data_modify_fn data_destroy);
+void
+h_tree_destroy(h_tree tree, data_modify_fn data_destroy);
 
 /* Returns the number of elements of the left and right subtrees + 1 */
-int h_tree_size(const h_tree tree);
+int
+h_tree_size(const h_tree tree);
 
 /* Returns a reference to the data stored in the root of the tree @root.
  * The TAD is still the owner of the reference. Modifying it's memory will
  * modify the content of the tree.
  */
-void *h_tree_get_data(const h_tree root);
+void*
+h_tree_get_data(const h_tree root);
 
 /* Returns a reference to the node containing @root's parent in the hierarchy.
  * The TAD is still the owner of the reference. Modifying it's memory will
  * modify the content of the tree.
  */
-h_tree h_tree_get_h_parent(const h_tree root);
+h_tree
+h_tree_get_h_parent(const h_tree root);
 
 /* Returns a reference to the node in @root that matches @key accoding to
  * @data_cmp_key. I.e, data_cmp_key(node->data, key) == 0
@@ -59,8 +63,8 @@ h_tree h_tree_get_h_parent(const h_tree root);
  * The TAD is still the owner of the reference. Modifying it's memory will
  * modify the content of the tree.
  */
-h_tree h_tree_search(const h_tree root, const void *key,
-                     data_cmp_fn data_cmp_key);
+h_tree
+h_tree_search(const h_tree root, const void* key, data_cmp_fn data_cmp_key);
 
 /* Inserts @new_data into @tree using the funcition @data_cmp to determine the
  * location of the new node in the tree. To correctly retrieve the node, the
@@ -71,31 +75,40 @@ h_tree h_tree_search(const h_tree root, const void *key,
  * The TAD is the owner of the reference to @new_data and will destroy it when
  * destroying the whole tree.
  */
-h_tree h_tree_insert(h_tree tree, void *new_data, h_tree h_parent,
-                     data_cmp_fn data_cmp);
+h_tree
+h_tree_insert(h_tree tree,
+              void* new_data,
+              h_tree h_parent,
+              data_cmp_fn data_cmp);
 
 /* Deletes @key from @tree using the funcition @data_cmp to determine the
  * location of the node in the tree. The function @data_destroy will be applied
  * to the node when found.
  * In case of error, errno is set to EINVAL.
  */
-h_tree h_tree_delete(h_tree tree, const void *key, data_cmp_fn data_cmp_key,
-                     data_modify_fn data_destroy);
+h_tree
+h_tree_delete(h_tree tree,
+              const void* key,
+              data_cmp_fn data_cmp_key,
+              data_modify_fn data_destroy);
 
 /* Applies the function @mod_fn to all elements in @tree, in pre-order. */
-void h_tree_iterate_preorder(h_tree tree, data_modify_fn mod_fn);
+void
+h_tree_iterate_preorder(h_tree tree, data_modify_fn mod_fn);
 
 /* Applies function @mod_fn to @tree and all its ancestors in the hierarchy (not
  * tree structure).
  */
-void h_tree_iterate_h_ancestors(h_tree tree, data_modify_fn mod_fn);
+void
+h_tree_iterate_h_ancestors(h_tree tree, data_modify_fn mod_fn);
 
 /* Fills up @elem_array with references to the tree data. References still
  * belong to the tree, do NOT modify them.
  * Caller must ensure @elem_array can hold all nodes (fat_tree_size(@tree)).
  * Caller owns the array and must free its memory.
  */
-void h_tree_flatten_preorder(const h_tree tree, void **elem_array);
+void
+h_tree_flatten_preorder(const h_tree tree, void** elem_array);
 
 /* Fills up @elem_array with references to direct h_children of root. Fills
  * last position with NULL terminator.
@@ -103,6 +116,7 @@ void h_tree_flatten_preorder(const h_tree tree, void **elem_array);
  * Caller must ensure @elem_array can hold all h_children.
  * Caller owns the array and must free its memory.
  */
-void h_tree_flatten_h_children(const h_tree root, void **elem_array);
+void
+h_tree_flatten_h_children(const h_tree root, void** elem_array);
 
 #endif /* HIERARCHY_TREE_H */

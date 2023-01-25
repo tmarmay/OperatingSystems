@@ -15,10 +15,10 @@ typedef u16 le16;
 typedef u32 le32;
 typedef u64 le64;
 
-typedef struct fat_dir_entry_s *fat_dir_entry;
-typedef struct fat_file_s *fat_file;
-typedef struct fat_table_s *fat_table;
-typedef struct fat_volume_s *fat_volume;
+typedef struct fat_dir_entry_s* fat_dir_entry;
+typedef struct fat_file_s* fat_file;
+typedef struct fat_table_s* fat_table;
+typedef struct fat_volume_s* fat_volume;
 
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 

@@ -24,57 +24,56 @@
 
 ### ¿Cómo compilar?
 
-        $ git clone https://marmiiT@bitbucket.org/sistop-famaf/so22lab4g30.git
-        $ cd so22lab4g30
-        $ make 
-        $ mkdir mnt 
-        $ ./fat-fuse resources/fatfs.img ./mnt
+-        $ git clone https://marmiiT@bitbucket.org/sistop-famaf/so22lab4g30.git
+-        $ cd so22lab4g30
+-        $ make 
+-        $ mkdir mnt 
+-        $ ./fat-fuse resources/fatfs.img ./mnt
             - Para montar la imagen
-        $ ./fat-fuse -d resources/fatfs.img ./mnt
+-        $ ./fat-fuse -d resources/fatfs.img ./mnt
             - Para ver en tiempo real las fat-fuse operations
-        $ ./fat-fuse -f resources/fatfs.img ./mnt
-            -Para debug mode
+-        $ ./fat-fuse -f resources/fatfs.img ./mnt
+           -Para debug mode
 
 -----
 
 ### *Coding style*
 
-    FALTA
-    la ultima respuesta ya esta lista
+Para mantener un estilo de código uniforme utilizamos la herramienta *clang-format* a través de su extensión en el editor VSCode.
+https://clang.llvm.org/docs/ClangFormat.html
 
 -----
 
-### Respuestas
+### Preguntas y Respuestas
 
-## Cuando se ejecuta el main con la opción -d, ¿qué se está mostrando en la pantalla? :
-- Se muestran todas las fuse operations que se están haciendo en tiempo real mientras usamos fat_fuse.
+##### Cuando se ejecuta el main con la opción -d, ¿qué se está mostrando en la pantalla? :
+- Por pantalla se nos muestran todas las *fuse operations* que se están realizando en tiempo real mientras se hace uso del sistema de archivos.
 
 ##### ¿Hay alguna manera de saber el nombre del archivo guardado en el cluster 157? :
-- No, no hay manera de saber, ya que dentro de cada entrada de la fat_table solo está la memoria que mapea, un offset de la estructura, el número de cluster, un offset por donde inician los datos, un file descriptor para escribir/leer  y su cluster order.
+- Es posible obtener el nombre de un archivo dado el número de cluster. Si repetimos el proceso que hicimos en big_brother.c, casteamos como fat_file y lo leemos con full_pread podemos acceder al nombre. Pero para ello debemos estar seguro que dicho cluster sea un fat_file porque de no ser así tendríamos un segmentation fault.
 
 
 ##### ¿Dónde se guardan las entradas de directorio? ¿Cuántos archivos puede tener adentro un directorio en FAT32?:
-- Se guardan dependiendo del cluster order, ya que nos determina el tamaño del directorio y eso nos dice el número de dir entries que puede tener, es decir la cantidad de archivos.
+- Las entradas se guardan dependiendo del cluster order, ya que éste determina el tamaño del directorio. Eso nos indica el número de dir_entries que puede tener, es decir la cantidad de archivos.
 
 
-##### Cuando se ejecuta el comando como ls -l, el sistema operativo, ¿llama a algún programa de usuario? 
- - ###### ¿A alguna llamada al sistema? ¿Cómo se conecta esto con FUSE? ¿Qué funciones de su código se ejecutan finalmente? :
-    -El sistema operativo no llama a ningún programa de usuario, y tampoco hace ninguna llamada del sistema. Esto se debe a que toda la información ya está guardada en el árbol de fat_fuse, así que no necesita leerlo de otro lado. 
-    Fat_fuse, a nivel interno, abre el directorio en el que se encuentra, para ver sus atributos (OPENDIR , GETATTR, READDIR, LOOKUP ) y obtener de esta manera a sus hijos. Luego itera, hasta que no le quede ningún hijo, mientras usa lookup y getattr.
+##### Cuando se ejecuta el comando como ls -l, el sistema operativo, ¿Llama a algún programa de usuario?: 
+- El OS no llama a ningún programa de usuario y tampoco hace ninguna llamada del sistema. Esto se debe a que toda la información ya está guardada en el árbol de fat_fuse, por lo que no necesita leerlo de otro lado. 
+    
+##### ¿A alguna llamada al sistema? ¿Cómo se conecta esto con FUSE? ¿Qué funciones de su código se ejecutan finalmente?:
+
+- Fat_fuse, a nivel interno, abre el directorio en el que se encuentra para ver sus atributos (OPENDIR , GETATTR, READDIR, LOOKUP ) y obtener de esta manera a sus hijos. Luego itera hasta que no le quede ningún hijo, mientras hace uso de lookup y getattr.
 
 
 ##### ¿Por qué tienen que escribir las entradas de directorio manualmente pero no tienen que guardar la tabla FAT cada vez que la modifican? :
-    -Es necesario que se modifiquen las entradas de directorio ya que dentro de estas están marcados los archivos que se deben ignorar por estar eliminados y nos permite ver como esta formado el árbol de archivos. Mientras que la FAT es una lista enlazada para agilizar los accesos a discos que esta guardada en RAM.
+- Es necesario que se modifiquen las entradas de directorio ya que dentro de éstas están marcados los archivos que se deben ignorar por estar eliminados. Además nos permite ver como esta formado el árbol de archivos. Por otro lado la FAT es una lista enlazada que permite agilizar los accesos a discos y ésta se encuentra guardada en RAM.
 
-##### Para los sistemas de archivos FAT32, la tabla FAT, ¿siempre tiene el mismo tamaño? En caso de que sí, ¿qué tamaño tiene? :
-    -Si, el número de clusters es constante (4.294.967.264), que es aproximadamente 2^32. Que se debe a como esta impementado la estructura de la fat table. Podemos ver que la cantidad de cluster esta representada con un u32 (unsigned int de 32 bits), por lo tanto la max capacidad es de 2^32. Por otro lado el tamaño de un solo cluster es de 2^9 = 512 bytes. 
-    Entonces el tamaño de la tabla FAT32 es de (2^32)*(2^9) = 2^41 = 2TB 
+##### Para los sistemas de archivos FAT32, la tabla FAT, ¿Siempre tiene el mismo tamaño? En caso de que sea así, ¿Qué tamaño tiene? :  
+- Si, el número de clusters es constante (4.294.967.264), que es aproximadamente 2^32. Esto se debe a como esta impementada la estructura de la fat table. Podemos ver que la cantidad de cluster esta representada con un u32 (unsigned int de 32 bits), por lo tanto la capacidad máxima es de 2^32. Por otro lado el tamaño de un solo cluster es de 2^9 == 512 bytes. 
+    Entonces el tamaño de la tabla FAT32 es de 2^32 * 2^9 = 2^41 = 2TB 
     
 -----
 
 ## Conclusion
 
-    - En este lab aprendimos como funciona fat-fuse (sistema de archivos) y lo facil que es ocultar informacion al usuario desde la implementacion 
-
-
-
+- En este lab aprendimos como funciona el sistema de archivos Fat-Fuse y lo facil que es ocultarle informacion al usuario desde la propia implementacion. 

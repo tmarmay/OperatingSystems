@@ -38,116 +38,131 @@ struct stat;
 #define MAX_FILENAME (8 + 1 + 3 + 1)
 #define MAX_PATH_LEN 4096 /* Copied from libfat */
 
-
 /********************* DATA STRUCTURES *********************/
 
 /* Format of a FAT directory entry on disk (32 bytes) */
-struct fat_dir_entry_s {
-    u8 base_name[8];
-    u8 extension[3];
-    u8 attribs;
-    u8 reserved;
-    u8 create_time_fine_res;
-    le16 create_time;      // BEWARE: little endian number
-    le16 create_date;      // BEWARE: little endian number
-    le16 last_access_date; // BEWARE: little endian number
-    union {
-        le16 file_access_bitmap; // Old formats
-        le16 fat32_start_cluster_high;
-    };
-    le16 last_modified_time; // BEWARE: little endian number
-    le16 last_modified_date; // BEWARE: little endian number
-    le16 start_cluster_low;  // only last two bytes
-    le32 file_size;
+struct fat_dir_entry_s
+{
+  u8 base_name[8];
+  u8 extension[3];
+  u8 attribs;
+  u8 reserved;
+  u8 create_time_fine_res;
+  le16 create_time;      // BEWARE: little endian number
+  le16 create_date;      // BEWARE: little endian number
+  le16 last_access_date; // BEWARE: little endian number
+  union
+  {
+    le16 file_access_bitmap; // Old formats
+    le16 fat32_start_cluster_high;
+  };
+  le16 last_modified_time; // BEWARE: little endian number
+  le16 last_modified_date; // BEWARE: little endian number
+  le16 start_cluster_low;  // only last two bytes
+  le32 file_size;
 } __attribute__((packed));
-
 
 /* Wrapper around a FAT directory entry that contains members used to put it in
  * data structures, and to use it as a file handle */
-struct fat_file_s {
-    // The data from the actual FAT directory entry
-    fat_dir_entry dentry;
-    // Full name of the file (with extension)
-    char name[MAX_FILENAME];
-    // Full path to file.
-    char *filepath;
-    // Full start cluster
-    u32 start_cluster;
+struct fat_file_s
+{
+  // The data from the actual FAT directory entry
+  fat_dir_entry dentry;
+  // Full name of the file (with extension)
+  char name[MAX_FILENAME];
+  // Full path to file.
+  char* filepath;
+  // Full start cluster
+  u32 start_cluster;
 
-    union {
-        // Valid only for directories
-        struct {
-            // Number of consecutive dir entries in disk (including ignored
-            // ones). It also marks the position of the first free space for a
-            // dir_entry.
-            u32 nentries;
-        } dir;
-        // Valid only for non-directory files
-        struct {
-            // Number of clusters that this file is supposed to be,
-            // based on the file_size given in the directory entry.
-            u32 num_clusters;
-        } file;
-    };
-    // Position in the parent directory entry table
-    u32 pos_in_parent;
-    // Pointer to the FAT table containing this file
-    fat_table table;
-    // Current number of open file descriptors to this file
-    u32 num_times_opened : 31;
-    // True iff the subdirectories of this file have been read into memory.
-    // Always 0 for non-directories.
-    u32 children_read : 1;
+  union
+  {
+    // Valid only for directories
+    struct
+    {
+      // Number of consecutive dir entries in disk (including ignored
+      // ones). It also marks the position of the first free space for a
+      // dir_entry.
+      u32 nentries;
+    } dir;
+    // Valid only for non-directory files
+    struct
+    {
+      // Number of clusters that this file is supposed to be,
+      // based on the file_size given in the directory entry.
+      u32 num_clusters;
+    } file;
+  };
+  // Position in the parent directory entry table
+  u32 pos_in_parent;
+  // Pointer to the FAT table containing this file
+  fat_table table;
+  // Current number of open file descriptors to this file
+  u32 num_times_opened : 31;
+  // True iff the subdirectories of this file have been read into memory.
+  // Always 0 for non-directories.
+  u32 children_read : 1;
 };
 
 /* Set cluster ready to delete*/
-void set_cluster_free(fat_table table,fat_file file, fat_file parent);
+void
+set_cluster_free(fat_table table, fat_file file, fat_file parent);
 
-/* Inits a file without using a parent's direntry. Can be used to create root file.
- * TAD is owner of @filepath and will apply free at destroy.
+/* Inits a file without using a parent's direntry. Can be used to create root
+ * file. TAD is owner of @filepath and will apply free at destroy.
  */
-fat_file fat_file_init_orphan_dir(char *name, fat_table table, u32 start_cluster);
+fat_file
+fat_file_init_orphan_dir(char* name, fat_table table, u32 start_cluster);
 
 /* Returns an new directory entry with default values.
  * Caller is still owner of @filepath reference.
  */
-fat_dir_entry fat_file_init_direntry(bool is_dir, char *filepath,
-                                     u32 start_cluster);
+fat_dir_entry
+fat_file_init_direntry(bool is_dir, char* filepath, u32 start_cluster);
 
 /* Allocate memory and do common initializations on a `fat_file'.
  * Set's the file in the next free entry of @table, and updates
  * If fat_table_get_next_free_cluster(vol) fails or is inconsistent, sets errno
  * to ENOSPC. If set_next_cluster fails, sets errno to EIO.
  */
-fat_file fat_file_init(fat_table table, bool is_dir, char *filepath);
+fat_file
+fat_file_init(fat_table table, bool is_dir, char* filepath);
 
 /* Frees filepath and dentry fields of @file, and finally the fat_file_s itself.
  */
-void fat_file_destroy(fat_file file);
+void
+fat_file_destroy(fat_file file);
 
 /* Returns strcmp between the filepath of @file1 and @file2. */
-int fat_file_cmp(fat_file file1, fat_file file2);
+int
+fat_file_cmp(fat_file file1, fat_file file2);
 
 /* Returns strcmp between the filepath of @file1 and filepath. */
-int fat_file_cmp_path(fat_file file1, char *filepath);
+int
+fat_file_cmp_path(fat_file file1, char* filepath);
 
 /********************* FILE METADATA *********************/
 
 /* Returns true if @file is a directory. */
-bool fat_file_is_directory(const fat_file file);
+bool
+fat_file_is_directory(const fat_file file);
 
 /* Increment the number of times that a FAT file or directory has been opened */
-void fat_file_inc_num_times_opened(fat_file file);
+void
+fat_file_inc_num_times_opened(fat_file file);
 
 /* Decrement the number of times that a FAT file or directory has been opened */
-void fat_file_dec_num_times_opened(fat_file file);
+void
+fat_file_dec_num_times_opened(fat_file file);
 
 /* Transfer the attributes of a FAT file into standard UNIX format struct stat.
  */
-void fat_file_to_stbuf(fat_file file, struct stat *stbuf);
+void
+fat_file_to_stbuf(fat_file file, struct stat* stbuf);
 
 /* Fills @buf with the time information in @file. */
-void fat_utime(fat_file file, fat_file parent, const struct utimbuf *buf);
+void
+fat_utime(fat_file file, fat_file parent, const struct utimbuf* buf);
 
 /********************* DIRECTORY FUNCTIONS *********************/
 
@@ -156,14 +171,16 @@ void fat_utime(fat_file file, fat_file parent, const struct utimbuf *buf);
  * If there is no more space in the parent's data cluster, sets errno to ENOSPC.
  * If there is an error in the write operation, sets errno to EIO.
  */
-void fat_file_dentry_add_child(fat_file parent, fat_file child);
+void
+fat_file_dentry_add_child(fat_file parent, fat_file child);
 
 /* Creates fat_file instances from @dir's directory entries in the FAT table.
  * Returns a GList with references to newly created fat_file.
  * It is not recursive (does not read files in subdirectories).
  * If there is an error in the read operation, sets errno to EIO and returns
  * NULL. Expects @dir to be a directory, not a file.*/
-GList *fat_file_read_children(fat_file dir);
+GList*
+fat_file_read_children(fat_file dir);
 
 /********************* DATA OPERATIONS *********************/
 
@@ -175,14 +192,19 @@ GList *fat_file_read_children(fat_file dir);
  * sets errno to EOVERFLOW.
  * If there is an error in the read or write operations, sets errno to EIO.
  */
-ssize_t fat_file_pread(fat_file file, void *buf, size_t size, off_t offset,
-                       fat_file parent);
+ssize_t
+fat_file_pread(fat_file file,
+               void* buf,
+               size_t size,
+               off_t offset,
+               fat_file parent);
 
 /* Truncates @file to @offset bytes. Frees unused clusters and sets new file
  * size. If offset is greater than file size, no operation is performed.
  * If there is an error in the read or write operations, sets errno to EIO
  */
-void fat_file_truncate(fat_file file, off_t offset, fat_file parent);
+void
+fat_file_truncate(fat_file file, off_t offset, fat_file parent);
 
 /* Write @size bytes from the FAT file @file at offset @offset, reading from
  * result into the buffer @buf. Returns a negative error number on failure,
@@ -192,7 +214,14 @@ void fat_file_truncate(fat_file file, off_t offset, fat_file parent);
  * write functions) TODO fill with zeros the gap between file_size and offset.
  * If there is an error in the read or write operations, sets errno to EIO.
  */
-ssize_t fat_file_pwrite(fat_file file, const void *buf, size_t size,
-                        off_t offset, fat_file parent);
+ssize_t
+fat_file_pwrite(fat_file file,
+                const void* buf,
+                size_t size,
+                off_t offset,
+                fat_file parent);
+
+u32
+file_start_cluster(fat_dir_entry disk_dentry);
 
 #endif /* _FAT_FILE_H */
